@@ -1,0 +1,40 @@
+{% load  staticfiles %}
+<div class="navbar-header">
+    <a class="navbar-brand" href="/">
+        <!--<img src="{% static 'custom' %}/img/inei_logo.jpg" alt="">
+        <img src="{% static 'custom' %}/img/logo_censo.png" alt="">-->
+    </a>
+
+    <ul class="nav navbar-nav pull-right visible-xs-block">
+        <li><a data-toggle="collapse" data-target="#navbar-mobile"><i class="icon-tree5"></i></a></li>
+        <li><a class="sidebar-mobile-main-toggle"><i class="icon-paragraph-justify3"></i></a></li>
+    </ul>
+
+</div>
+<div class="navbar-collapse collapse" id="navbar-mobile">
+
+    <ul class="nav navbar-nav">
+        <li><a class="sidebar-control sidebar-main-toggle hidden-xs"><i class="icon-paragraph-justify3"></i></a></li>
+        <li>
+            <!--<h5>{{ CLIENTE_TITULO|safe }}</h5>-->
+        </li>
+    </ul>
+
+    <ul class="nav navbar-nav navbar-right">
+
+        <li class="dropdown dropdown-user">
+            <a class="dropdown-toggle" data-toggle="dropdown">
+                <!--<img src="{% static 'assets' %}/images/image.png" alt="">
+                <span>{{ data_user.user.nombre }} {{ data_user.user.ape_pat }}</span>
+                <i class="caret"></i>-->
+            </a>
+
+            <ul class="dropdown-menu dropdown-menu-right">
+
+                <!--<li><a href="{% url 'webclient:cerrar_sesion' %}">
+                    <i class="icon-switch2"></i> Cerrar Sesión</a>
+                </li>-->
+            </ul>
+        </li>
+    </ul>
+</div>

@@ -1,0 +1,27 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head></head>
+<style>
+</style>
+<body>
+    <table>
+        <tr>
+            <th rowspan="2" style="padding-top: 0px;" width="100">
+
+            </th>
+            <th>
+                {% block titulo %} {% endblock %}
+
+            </th>
+            <th rowspan="2" style="padding-top: 0px;" width="100">
+
+            </th>
+        </tr>
+        <tr>
+            <th style="padding-bottom: 3px;"> </th>
+        </tr>
+    </table>
+    {% block documento %}{% endblock %}
+</body>
+</html>

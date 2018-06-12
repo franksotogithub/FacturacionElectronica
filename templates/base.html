@@ -1,0 +1,114 @@
+{% load  staticfiles %}<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>FACTURACION ELECTRONICA</title>
+
+	<!-- Global stylesheets -->
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
+	<link href="{% static 'assets' %}/css/icons/icomoon/styles.css" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets' %}/css/icons/fontawesome/styles.min.css" rel="stylesheet" type="text/css">
+	<link href="{% static 'assets' %}/css/bootstrap.css" rel="stylesheet" type="text/css">
+	<link href="{% static 'assets' %}/css/core.css" rel="stylesheet" type="text/css">
+	<link href="{% static 'assets' %}/css/components.css" rel="stylesheet" type="text/css">
+	<link href="{% static 'assets' %}/css/colors.css" rel="stylesheet" type="text/css">
+    <link href="{% static 'custom' %}/css/skin.css" rel="stylesheet" type="text/css">
+    <link href="{% static 'custom' %}/js/libs/numpad/jquery.numpad.css" rel="stylesheet" type="text/css">
+    <link href="{% static 'custom' %}/js/libs/print/print.min.css" rel="stylesheet" type="text/css">
+    {% block customcss %}{% endblock %}
+	<!-- /global stylesheets -->
+
+	<!-- Core JS files -->
+	<script type="text/javascript" src="{% static 'assets' %}/js/core/libraries/jquery.min.js"></script>
+    <script type="text/javascript" src="{% static 'assets' %}/js/core/libraries/jquery_ui/interactions.min.js"></script>
+	<script type="text/javascript" src="{% static 'assets' %}/js/core/libraries/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{% static 'custom' %}/js/libs/jquery.form.js"></script>
+	<!-- /core JS files -->
+
+	<!-- Theme JS files -->
+    <script type="text/javascript" src="{% static 'assets' %}/js/plugins/forms/validation/validate.min.js"></script>
+	<script type="text/javascript" src="{% static 'assets' %}/js/plugins/ui/nicescroll.min.js"></script>
+    <script type="text/javascript" src="{% static 'assets' %}/js/plugins/ui/moment/moment.min.js"></script>
+    <script type="text/javascript" src="{% static 'assets' %}/js/plugins/pickers/daterangepicker.js"></script>
+    <script type="text/javascript" src="{% static 'assets' %}/js/plugins/pickers/pickadate/picker.js"></script>
+    <script type="text/javascript" src="{% static 'assets' %}/js/plugins/pickers/pickadate/picker.date.js"></script>
+    <script type="text/javascript" src="{% static 'assets' %}/js/plugins/pickers/pickadate/picker.time.js"></script>
+    <script type="text/javascript" src="{% static 'assets' %}/js/plugins/pickers/pickadate/legacy.js"></script>
+    <script type="text/javascript" src="{% static 'assets' %}/js/plugins/notifications/sweet_alert.min.js"></script>
+    <script type="text/javascript" src="{% static 'assets' %}/js/plugins/uploaders/fileinput.min.js"></script>
+    <script type="text/javascript" src="{% static 'assets' %}/js/plugins/ui/dragula.min.js"></script>
+    <script type="text/javascript" src="{% static 'assets' %}/js/plugins/forms/selects/select2.min.js"></script>
+    <script type="text/javascript" src="{% static 'assets' %}/js/plugins/forms/styling/switchery.min.js"></script>
+	<script type="text/javascript" src="{% static 'assets' %}/js/plugins/forms/styling/switch.min.js"></script>
+	<script type="text/javascript" src="{% static 'assets' %}/js/core/app.js"></script>
+    <script type="text/javascript" src="{% static 'assets' %}/js/pages/uploader_bootstrap.js"></script>
+	<script type="text/javascript" src="{% static 'assets' %}/js/pages/layout_fixed_custom.js"></script>
+    <script type="text/javascript" src="{% static 'assets' %}/js/plugins/media/jquery.zoom.min.js"></script>
+	<!-- /theme JS files -->
+
+    <!-- custom libs -->
+    <script type="text/javascript" src="{% static 'custom' %}/js/libs/moment-with-locales.js"></script>
+    <script type="text/javascript" src="{% static 'custom' %}/js/libs/jquery.jsonserializer.js"></script>
+    <script type="text/javascript" src="{% static 'custom' %}/js/utils.jquery.js"></script>
+    <script type="text/javascript" src="{% static 'assets' %}/js/plugins/tables/datatables/datatables.min.js"></script>
+    <script type="text/javascript" src="{% static 'assets' %}/js/plugins/tables/datatables/extensions/fixed_columns.min.js"></script>
+    <script type="text/javascript" src="{% static 'custom' %}/js/libs/numpad/jquery.numpad.js"></script>
+    <script type="text/javascript" src="{% static 'custom' %}/js/libs/jquery.alphanum.js"></script>
+    <script type="text/javascript" src="{% static 'custom' %}/js/libs/print/print.min.js"></script>
+
+
+    {% block requirejs %}{% endblock %}
+    <script type="text/javascript">
+
+
+    </script>
+    {% block mainjs %}
+
+    {% endblock %}
+
+
+</head>
+
+<body class="navbar-top sidebar-xs">
+    <div id="csrf_token">
+        {% csrf_token %}
+    </div>
+
+    <script type="text/javascript">
+        //INEI.csrf_token = $.trim($("#csrf_token").find('input').val());
+    </script>
+	<!-- Main navbar -->
+	<div class="navbar navbar-inverse navbar-fixed-top bg-{{ color }}">
+		{% include 'layouts/navbar-header.html' %}
+	</div>
+	<!-- /main navbar -->
+
+	<!-- Page container -->
+	<div class="page-container">
+		<!-- Page content -->
+		<div class="page-content">
+            {% include 'layouts/sidebar.html' %}
+			<!-- Main content -->
+			<div class="content-wrapper">
+				{% block content-wrapper %}{% endblock %}
+
+			</div>
+			<!-- /main content -->
+
+		</div>
+		<!-- /page content -->
+
+	</div>
+	<!-- /page container -->
+<script type="text/javascript">
+
+</script>
+{% block customjs %} {% endblock %}
+
+
+{% block taklto %}{% endblock %}
+
+</body>
+</html>

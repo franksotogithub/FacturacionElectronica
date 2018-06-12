@@ -1,0 +1,9 @@
+.idea
+env
+__pycache__
+*.pyc
+FacturacionElectronica/settings/local.py
+db.sqlite3
+static/assets/
+db.sqlite3
+apps/
