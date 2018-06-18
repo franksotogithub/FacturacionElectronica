@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load  staticfiles %}
+{% block content-wrapper %}
+    <div class="content">
+
+    {% block modals-view %} {% endblock %}
+    <!-- panel de alerts -->
+    <div class="row">
+        <div class="col-md-12" id="alerts-view"></div>
+    </div>
+    <!-- /panel de acciones -->
+    <!-- panel de acciones -->
+    <div class="panel panel-flat">
+        <div class="panel-body" id="action_view">
+
+            <div class="row" id="actions-table-tools" style="margin-top: 20px;">
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="row">
+
+                        <div class="col-xs-6 col-sm-6 col-md-6">
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        {% block actions-view %} {% endblock %}
+        </div>
+    </div>
+    <!-- /panel de acciones -->
+
+    {% block middle-actions-view %} {% endblock %}
+
+    <!-- panel table-->
+    <div class="panel panel-flat">
+        <div class="panel-body" id="actions-table-view">
+        {% block actions-table-view %} {% endblock %}
+        </div>
+        <div class="table-responsive">
+        {% block table-view %} {% endblock %}
+        </div>
+    </div>
+    <!-- /simple panel -->
+
+    {% block other_container %} {% endblock %}
+    <!-- Footer -->
+    <div class="footer text-muted">
+        &copy; 2018. <a href="#">MEGABOTIKAS</a>
+    </div>
+    <!-- /footer -->
+
+</div>
+{% endblock %}

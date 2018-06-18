@@ -8,7 +8,6 @@
     </h2>
 
     <h4 style="margin-bottom: 0px; font-size: 12px;">
-
     EJEMPLO
     </h4>
     <!--
@@ -21,7 +20,7 @@
 {% block documento %}
 
 <h1 style="text-align: center; margin: 20px 0px 0px 0px;"> FACTURA ELECTRONICA</h1>
-    <h1 style="text-align: center; margin: 20px 0px 0px 0px;"> {{ejemplo2}}</h1>
+    <h1 style="text-align: center; margin: 20px 0px 0px 0px;">RAZON SOCIAL {{cab.rznSocialUsuario}}</h1>
 <h1 style="text-align: center; margin: 20px 0px 0px 0px;"> {{ejemplo}}</h1>
     <h1 style="text-align: left; margin: 20px 0px 0px 0px;">{{fecha|date:'d-m-Y'}}</h1>
 
@@ -30,19 +29,19 @@
 <table style="border:1px solid #000011; border-collapse: collapse; text-align: center; "  class="glyphicon-align-center">
 
     <tr style="padding: 2px 5px 0px 5px;" >
-        <th style="background-color: #cccccc;font-size: 11px;" width="160px" >RAZON SOCIAL</th>
-        <th style="background-color: #cccccc;font-size: 11px;" width="160px" >NRO DOCUMENTO</th>
+        <th style="background-color: #cccccc;font-size: 11px;" width="160px" >CANT.</th>
+        <th style="background-color: #cccccc;font-size: 11px;" width="160px" >DESCRIPCION</th>
+        <th style="background-color: #cccccc;font-size: 11px;" width="160px" >MONTO UNID.</th>
     </tr>
 
     <tbody>
         {% for dato in datos %}
 
         <tr style="padding: 2px 5px 0px 5px;">
-            <td width="160px" style="font-size: 11px;">{{dato.rznSocialUsuario}}</td>
-            <td width="160px" style="font-size: 11px;">{{dato.numDocUsuario}}</td>
-
+            <td width="160px" style="font-size: 11px;">{{dato.ctdUnidadItem}}</td>
+            <td width="160px" style="font-size: 11px;">{{dato.desItem}}</td>
+            <td width="160px" style="font-size: 11px;">{{dato.mtoValorUnitario}}</td>
         </tr>
-
         {% endfor %}
 
 
@@ -51,11 +50,9 @@
 
 <table style="margin-top: 40px;">
     <tr>
-
         <td style="width: 20px;"></td>
         <td style="width: 20px;"></td>
         <td>
-
         </td>
         <td style="width: 20px;"></td>
 

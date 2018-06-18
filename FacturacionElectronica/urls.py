@@ -18,24 +18,11 @@ from django.urls import path
 from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.conf import settings
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url(r'^facturacion/', include('facturacion.api.urls',namespace='facturacion')),
-    url(r'^/', include('webclient.urls'),namespace='webclient'),
+    url(r'^facturacion/', include('facturacion.api.urls',namespace='facturacion-api')),
+    url(r'^', include('webclient.urls',namespace='webclient')),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-
-#from django.conf.urls import url, include
-#from django.contrib import admin
-#from django.conf import settings
-#from django.conf.urls.static import static
-#
-#urlpatterns = [
-#    url(r'^admin/', admin.site.urls),
-#    url(r'^facturacion/', include('facturacion.api.urls', namespace='facturacion')),
-#
-#    #url(r'^cedulas/', include('cedulas.urls', namespace='cedula')),
-#    #url(r'^', include('webclient.urls', namespace='webclient')),
-#
-#] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

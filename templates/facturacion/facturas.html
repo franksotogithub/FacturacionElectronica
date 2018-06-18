@@ -1,0 +1,59 @@
+{% extends 'wrapper.html' %}
+{% load  staticfiles %}
+{% block table-view %}
+<div class="panel-body" id="table-view">
+       <div class="row">
+          <div class="col-xs-4 col-sm-4 col-md-12">
+              <table class="table datatable-basic" id="tabla_facturas">
+                <thead class="bg-primary">
+                  <tr>
+
+                      <th>NRO FACTURA</th>
+                      <th>COD CLIENTE</th>
+                      <th>CLIENTE</th>
+                      <th>FECHA EMISION</th>
+                      <th>MONTO</th>
+
+                      <!--<th>DESCARGAR</th>
+                      <th>ENVIAR</th>-->
+                      <th>
+                        <input type="checkbox" class="checkbox_todo">
+                      </th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+
+              <button type="button" class="btn btn-success asignar_carga">
+                <i class="fa fa-download" aria-hidden="true"></i> DESCARGAR
+              </button>
+          </div>
+
+
+       </div>
+   </div>
+{% endblock %}
+
+
+{% block requirejs %}
+
+    <script type="text/javascript">
+        var App = {
+            filerequired: {
+                service: ['ajax', 'facturacion'],
+                utils: ['facturas']
+            }
+        };
+    </script>
+{% endblock %}
+
+
+{% block customjs %}
+<script type="text/javascript">
+    $(document).ready(function (e) {
+        var tabla_facturas =$('#tabla_facturas');
+        $utils.facturas.listarFacturas(tabla_facturas);
+
+    });
+</script>
+{% endblock %}

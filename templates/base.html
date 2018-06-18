@@ -14,9 +14,11 @@
 	<link href="{% static 'assets' %}/css/core.css" rel="stylesheet" type="text/css">
 	<link href="{% static 'assets' %}/css/components.css" rel="stylesheet" type="text/css">
 	<link href="{% static 'assets' %}/css/colors.css" rel="stylesheet" type="text/css">
+    <!--
     <link href="{% static 'custom' %}/css/skin.css" rel="stylesheet" type="text/css">
     <link href="{% static 'custom' %}/js/libs/numpad/jquery.numpad.css" rel="stylesheet" type="text/css">
     <link href="{% static 'custom' %}/js/libs/print/print.min.css" rel="stylesheet" type="text/css">
+-->
     {% block customcss %}{% endblock %}
 	<!-- /global stylesheets -->
 
@@ -24,7 +26,7 @@
 	<script type="text/javascript" src="{% static 'assets' %}/js/core/libraries/jquery.min.js"></script>
     <script type="text/javascript" src="{% static 'assets' %}/js/core/libraries/jquery_ui/interactions.min.js"></script>
 	<script type="text/javascript" src="{% static 'assets' %}/js/core/libraries/bootstrap.min.js"></script>
-    <script type="text/javascript" src="{% static 'custom' %}/js/libs/jquery.form.js"></script>
+    <!--<script type="text/javascript" src="{% static 'custom' %}/js/libs/jquery.form.js"></script>-->
 	<!-- /core JS files -->
 
 	<!-- Theme JS files -->
@@ -49,14 +51,17 @@
 	<!-- /theme JS files -->
 
     <!-- custom libs -->
-    <script type="text/javascript" src="{% static 'custom' %}/js/libs/moment-with-locales.js"></script>
+    <!--<script type="text/javascript" src="{% static 'custom' %}/js/libs/moment-with-locales.js"></script>
     <script type="text/javascript" src="{% static 'custom' %}/js/libs/jquery.jsonserializer.js"></script>
-    <script type="text/javascript" src="{% static 'custom' %}/js/utils.jquery.js"></script>
+    <script type="text/javascript" src="{% static 'custom' %}/js/utils.jquery.js"></script>-->
+
+
     <script type="text/javascript" src="{% static 'assets' %}/js/plugins/tables/datatables/datatables.min.js"></script>
     <script type="text/javascript" src="{% static 'assets' %}/js/plugins/tables/datatables/extensions/fixed_columns.min.js"></script>
+    <!--
     <script type="text/javascript" src="{% static 'custom' %}/js/libs/numpad/jquery.numpad.js"></script>
     <script type="text/javascript" src="{% static 'custom' %}/js/libs/jquery.alphanum.js"></script>
-    <script type="text/javascript" src="{% static 'custom' %}/js/libs/print/print.min.js"></script>
+    <script type="text/javascript" src="{% static 'custom' %}/js/libs/print/print.min.js"></script>-->
 
 
     {% block requirejs %}{% endblock %}
@@ -64,8 +69,8 @@
 
 
     </script>
-    {% block mainjs %}
-
+     {% block mainjs %}
+        <script type="text/javascript" src="{% static 'custom' %}/js/app.js?v=0.2" id="app-js" data-require=""></script>
     {% endblock %}
 
 
