@@ -1,0 +1,370 @@
+{% extends 'wrapper.html' %}
+{% load  staticfiles %}
+{% block customcss %}
+    <style>
+    /*.dataTables_wrapper .datatable-header {
+            display: none;
+        }*/
+
+    /*table.dataTable thead tr th {
+    word-wrap: break-word;
+    word-break: break-all;
+    }
+
+    table.dataTable tbody tr td {
+        word-wrap: break-word;
+        word-break: break-all;
+    }
+
+
+  #tabla_detalle td, #tabla_detalle th{
+            white-space: normal;
+        }
+*/
+    </style>
+{% endblock %}
+
+{% block modals-view %}
+<!--
+<div id="modal_detalle_comprobante" class="modal fade in">
+         <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h6 class="modal-title text-center">
+                        <div class="titulo_modal">Detalle de Comprobante</div>
+
+                    </h6>
+                </div>
+
+                <div class="modal-body" >
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="control-label col-lg-1"> F.de Emision </label>
+                            <div class="col-lg-3">
+                                <input type="text" class="form-control"   id="cffecdoc">
+                            </div>
+                            <label class="control-label col-lg-1"> Doc </label>
+                            <div class="col-lg-3">
+                                <input type="text" class="form-control"   id="cfnumdoc">
+                            </div>
+
+                            <label class="control-label col-lg-1"> Estado </label>
+                            <div class="col-lg-3">
+                                <input type="text" class="form-control"  id="estado_comprobante">
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="row">
+                          <div class="form-group">
+                            <label class="control-label col-lg-1"> Cliente </label>
+                            <div class="col-lg-3">
+                                <input type="text" class="form-control "  id="nro_doc_receptor" >
+                            </div>
+
+                            <label class="control-label col-lg-1"> RUC </label>
+                            <div class="col-lg-3">
+                                <input type="text" class="form-control "  id="nro_doc_receptor" >
+                            </div>
+
+                            <label class="control-label col-lg-1"> CDFI </label>
+                            <div class="col-lg-3">
+                                <input type="text" class="form-control "   >
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="row">
+
+                        <div class="form-group">
+                            <label class="control-label col-lg-1"> Razon Social </label>
+                            <div class="col-lg-7">
+                                <input type="text" class="form-control "   id="cfnombre">
+                            </div>
+
+                            <label class="control-label col-lg-1"> Moneda </label>
+                            <div class="col-lg-3">
+                                <input type="text" class="form-control "  id="estado_correo" >
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+
+                            <label class="control-label col-lg-1"> Estado Correo </label>
+                            <div class="col-lg-3">
+                                <input type="text" class="form-control "   >
+                            </div>
+
+                        </div>
+                     </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                          <table class="table datatable-basic" id="tabla_detalle" style="width:880px;" >
+                            <thead class="bg-purple ">
+                                <th width="100">ORDEN</th>
+                                <th width="100">CANT.</th>
+                                <th width="100">UND.</th>
+                                <th width="150">CODIGO</th>
+                                <th width="400">DESCRIPCION</th>
+                                <th width="100"> P.UNIT.</th>
+                                <th width="100">SUBTOTAL</th>
+                            </thead>
+                            <tbody></tbody>
+                          </table>
+                        </div>
+
+
+                    </div>
+                    <div class="row">
+                          <div class="form-group">
+                            <label class="control-label col-lg-2"> Op.Exoneradas </label>
+                            <div class="col-lg-4">
+                                <input type="text" class="form-control "  id="tvv_cod_ope_exoneradas" >
+                            </div>
+
+                            <label class="control-label col-lg-2"> Total </label>
+                            <div class="col-lg-4">
+                                <input type="text" class="form-control "  id="tvv_imp_ope_gravadas" >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                          <div class="form-group">
+                            <label class="control-label col-lg-2"> Op.Inafectas </label>
+                            <div class="col-lg-4">
+                                <input type="text" class="form-control "  id="tvv_imp_ope_inafectas" >
+                            </div>
+
+                            <label class="control-label col-lg-2"> IGV </label>
+                            <div class="col-lg-4">
+                                <input type="text" class="form-control "  id="sumatoria_igv" >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                          <div class="form-group">
+                            <label class="control-label col-lg-2"> Op.Gravadas </label>
+                            <div class="col-lg-4">
+                                <input type="text" class="form-control "  id="tvv_imp_ope_inafectas" >
+                            </div>
+
+                            <label class="control-label col-lg-2"> ISC </label>
+                            <div class="col-lg-4">
+                                <input type="text" class="form-control "  id="sumatoria_isc" >
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer ">
+                    <button type="button" class="btn btn-primary"  id="descargar_pdf"><li class="fa fa-file-pdf-o"> DESCARGAR PDF</li> </button>
+                    <button type="button" class="btn bg-info"  id="descargar_xml"><li class="fa fa-file-text"> DESCARGAR XML</li> </button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">CANCELAR<li class="icon-close2"> </li> </button>
+                </div>
+
+            </div>
+         </div>
+     </div>
+-->
+
+{% endblock %}
+{% block actions-table-view %}
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <!--<form method="get" action="#" id="frmregistro">-->
+            <div class="row">
+
+
+            <div class="form-group col-md-4">
+                <label class="control-label col-md-3"> RUC o DNI: </label>
+                <div class="col-md-9">
+                <input type="text" class="form-control"   id="cfcodcli">
+                </div>
+                <label  class="validation-error-label" id="cfcodcli_error" style="display: none">Este campo es requerido</label>
+            </div>
+
+            <div class="form-group col-md-4">
+                <label class="control-label col-md-6">TIPO DE DOCUMENTO:</label>
+                <div class="col-md-6">
+                    <select  class="form-control" id="tipodoc_comprobante">
+                    <option value="">ELIGA</option>
+                    <option value="01">FACTURA</option>
+                    <option value="03">BOLETA</option>
+                    <option value="07">NOTA DE CREDITO</option>
+                    </select>
+                </div>
+                <label  class="validation-error-label" id="tipodoc_comprobante_error" style="display: none">Debe elegir un tipo</label>
+
+            </div>
+            <div class="form-group col-md-4">
+                <label class="control-label col-md-3"> FECHA: </label>
+                <div class="col-md-9">
+                    <input type="text" class="form-control"   id="cffecdoc">
+                </div>
+                <label  class="validation-error-label" id="cffecdoc_error" style="display: none">Este campo es requerido</label>
+            </div>
+
+
+    </div>
+            <div class="row">
+
+                <div class="form-group col-md-4">
+                    <label class="control-label col-lg-3">SERIE:</label>
+                    <div class="col-lg-9">
+                        <input type="text" class="form-control"   id="cfnumser">
+                    </div>
+
+                    <label  class="validation-error-label" id="cfnumser_error" style="display: none">Este campo es requerido</label>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label class="control-label col-lg-3">CORRELATIVO:</label>
+                    <div class="col-lg-9">
+                        <input type="text" class="form-control"   id="cfnumdoc">
+                    </div>
+
+                    <label  class="validation-error-label" id="cfnumdoc_error" style="display: none">Este campo es requerido</label>
+
+                </div>
+
+                <div class="form-group col-md-4">
+                     <label class="control-label col-lg-3">MONTO TOTAL: </label>
+                    <div class="col-lg-9">
+                        <input type="text" class="form-control"   id="importe_total_venta">
+                    </div>
+                    <label  class="validation-error-label" id="importe_total_venta_error" style="display: none">Este campo es requerido</label>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-lg-3">
+                        <!--<button type="submit" class="btn btn-primary">CONSULTAR</button>-->
+                        <input type="button" class="btn btn-primary"  value="CONSULTAR"  id="buscar">
+                    </div>
+                </div>
+            </div>
+            <!--</form>-->
+
+        </div>
+{% endblock %}
+
+{% block table-view %}
+<div class="panel-body" id="table-view">
+       <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12">
+              <table class="table datatable-basic" id="tabla_comprobantes">
+                <thead class="bg-primary">
+                  <tr>
+                      <th width="100px">FECHA EMISION</th>
+                      <th>NRO SERIE</th>
+                      <th>NRO COMPROBANTE</th>
+                      <th width="300px">CLIENTE</th>
+                      <th>MONTO</th>
+                      <th>ACCION</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+
+          </div>
+
+
+       </div>
+   </div>
+{% endblock %}
+
+
+{% block requirejs %}
+    <script type="text/javascript">
+        var App = {
+            filerequired: {
+                service: ['ajax', 'comprobante'],
+                utils: ['consultar_comprobante']
+            }
+        };
+    </script>
+{% endblock %}
+
+
+{% block customjs %}
+<script type="text/javascript">
+
+    $(document).ready(function (e) {
+         var tablaComprobante =$('#tabla_comprobantes');
+         var list=['#cfcodcli','#cffecdoc','#tipodoc_comprobante','#cfnumser','#cfnumdoc','#importe_total_venta']
+
+
+         $('#cffecdoc').daterangepicker({
+            singleDatePicker: true,
+            startDate: moment(),
+            locale:App.locale,
+        });
+
+
+        $('#descargar_pdf').on('click',function () {
+            $utils.facturas.descargarPdf();
+        });
+        $('#descargar_xml').on('click',function () {
+            $utils.facturas.descargarXml();
+        });
+
+
+        $('#buscar').on('click',function(){
+            var cfcodcli=$('#cfcodcli').val();
+            var cffecdoc=$('#cffecdoc').val();
+            var tipodoc=$('#tipodoc_comprobante option:selected').val();
+            var cfnumser=$('#cfnumser').val();
+            var cfnumdoc=$('#cfnumdoc').val();
+            var importe_total_venta=$('#importe_total_venta').val();
+
+            if (cfcodcli== undefined || cfcodcli=='')
+                $('#cfcodcli_error').css('display','inline');
+            else if (tipodoc== undefined || tipodoc=='')
+                $('#tipodoc_comprobante_error').css('display','inline');
+
+            else if (cfnumser== undefined || cfnumser=='')
+                $('#cfnumser_error').css('display','inline');
+            else if (cfnumdoc== undefined || cfnumdoc=='')
+                $('#cfnumdoc_error').css('display','inline');
+
+            else if (importe_total_venta== undefined || importe_total_venta=='')
+                $('#importe_total_venta_error').css('display','inline');
+
+            else {
+                var data={
+                    'cfcodcli'            :cfcodcli,
+                    'cffecdoc'            :cffecdoc,
+                    'tipodoc_comprobante' :tipodoc,
+                    'cfnumser'            :cfnumser,
+                    'cfnumdoc'            :cfnumdoc,
+                    'importe_total_venta' :importe_total_venta,
+                    'csrfmiddlewaretoken' : App.csrf_token,
+                };
+                $utils.consultar_comprobante.listarComprobantes(tablaComprobante,data)
+
+            }
+
+        });
+
+
+        $('#tabla_comprobantes tbody').on('click','.descargar_xml',function () {
+            $utils.consultar_comprobante.descargarXml($(this));
+        })
+
+
+        list.forEach(function (el,index) {
+            $(el).change(function () {
+               $(el+'_error').css('display','none');
+            });
+
+        })
+
+    });
+</script>
+{% endblock %}

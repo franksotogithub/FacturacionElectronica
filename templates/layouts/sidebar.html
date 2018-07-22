@@ -7,11 +7,18 @@
             <div class="category-content no-padding">
                 <ul class="navigation navigation-main navigation-accordion">
                     <!-- Main -->
-                        <li><a href="{% url 'webclient:facturas' %}">
+                        <li><a href="{% url 'facturacion:facturas' %}">
                             <i class="icon-file-spreadsheet"></i>Facturas</a>
                         </li>
-
-
+                        <li><a href="{% url 'facturacion:boletas' %}">
+                            <i class="icon-file-xml"></i>Boletas</a>
+                        </li>
+                        <li><a href="{% url 'facturacion:notas-credito' %}">
+                            <i class="icon-file-spreadsheet2"></i>Notas Credito</a>
+                        </li>
+                        <li><a href="{% url 'facturacion:consultar-comprobantes' %}">
+                            <i class="icon-search4"></i>Consulta Cliente</a>
+                        </li>
                     <!-- /main -->
                 </ul>
             </div>

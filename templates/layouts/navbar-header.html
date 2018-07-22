@@ -21,18 +21,20 @@
     </ul>
 
     <ul class="nav navbar-nav navbar-right">
-
         <li class="dropdown dropdown-user">
+
+            {% if request.user.is_authenticated %}
             <a class="dropdown-toggle" data-toggle="dropdown">
-                <!--<img src="{% static 'assets' %}/images/image.png" alt="">
-                <span>{{ data_user.user.nombre }} {{ data_user.user.ape_pat }}</span>
-                <i class="caret"></i>-->
+                <img src="assets/images/placeholder.jpg" alt="">
+                <span>{{ request.user.nombres }}</span>
+                <i class="caret"></i>
             </a>
-
             <ul class="dropdown-menu dropdown-menu-right">
-
-
+                <li><a href="{% url 'usuarios:cerrar-sesion' %}"><i class="icon-switch2"></i> Cerrar Sesion</a></li>
             </ul>
+
+            {% endif %}
         </li>
+
     </ul>
 </div>

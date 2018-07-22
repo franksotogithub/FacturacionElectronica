@@ -72,6 +72,18 @@ TEMPLATES = [
     },
 ]
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    },
+    'qr-code': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'qr-code-cache',
+        'TIMEOUT': 3600
+    }
+}
+
+
 WSGI_APPLICATION = 'FacturacionElectronica.wsgi.application'
 
 
@@ -128,5 +140,14 @@ EMAIL_HOST_USER = 'franksoto2012@gmail.com'
 EMAIL_HOST_PASSWORD = 'MBs0p0rt301'
 EMAIL_PORT = 587
 
-
 RUC= '10452575014'
+
+MEDIA_ROOT_FILES =r'\\DESKTOP-ML6FRVL\sunat_archivos\sfs\FIRMA'
+MEDIA_ROOT_FILES_TXT =r'\\DESKTOP-ML6FRVL\sunat_archivos\sfs\DATA'
+MEDIA_ROOT_FILES_PDF =r'\\DESKTOP-ML6FRVL\sunat_archivos\sfs\ENVIO'
+MEDIA_ROOT_IMG =r'G:\ProyectosDjango\FacturacionElectronica\static\img'
+MEDIA_ROOT_FILES_XML_FIRMA =r'\\DESKTOP-ML6FRVL\sunat_archivos\sfs\FIRMA'
+MEDIA_ROOT_FILES_XML =r'\\DESKTOP-ML6FRVL\sunat_archivos\pruebas'
+MEDIA_ROOT_FILES_XML_R =r'\\DESKTOP-ML6FRVL\sunat_archivos\sfs\ENVIO'
+MEDIA_ROOT_FILES_XML_ENVIO =r'\\DESKTOP-ML6FRVL\sunat_archivos\sfs\ENVIO'
+QR_CODE_CACHE_ALIAS = 'qr-code'

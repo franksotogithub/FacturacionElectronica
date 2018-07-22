@@ -1,0 +1,136 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Limitless - Responsive Web Application Kit by Eugene Kopyov</title>
+
+	<!-- Global stylesheets -->
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
+	<link href="{% static 'assets' %}/css/icons/icomoon/styles.css" rel="stylesheet" type="text/css">
+	<link href="{% static 'assets' %}/css/bootstrap.css" rel="stylesheet" type="text/css">
+	<link href="{% static 'assets' %}/css/core.css" rel="stylesheet" type="text/css">
+	<link href="{% static 'assets' %}/css/components.css" rel="stylesheet" type="text/css">
+	<link href="{% static 'assets' %}/css/colors.css" rel="stylesheet" type="text/css">
+	<!-- /global stylesheets -->
+
+	<!-- Core JS files -->
+	<script type="text/javascript" src="{% static 'assets' %}/js/plugins/loaders/pace.min.js"></script>
+	<script type="text/javascript" src="{% static 'assets' %}/js/core/libraries/jquery.min.js"></script>
+	<script type="text/javascript" src="{% static 'assets' %}/js/core/libraries/bootstrap.min.js"></script>
+	<script type="text/javascript" src="{% static 'assets' %}/js/plugins/loaders/blockui.min.js"></script>
+	<!-- /core JS files -->
+
+
+
+</head>
+
+<body class="login-container">
+
+	<!-- Main navbar -->
+	<div class="navbar navbar-inverse navbar-fixed-top bg-{{ color }}">
+		{% include 'layouts/navbar-header.html' %}
+	</div>
+	<!-- /main navbar -->
+
+
+	<!-- Page container -->
+	<div class="page-container">
+
+		<!-- Page content -->
+		<div class="page-content">
+
+			<!-- Main content -->
+			<div class="content-wrapper">
+
+				<!-- Content area -->
+				<div class="content">
+
+					<!-- Simple login form -->
+					<form method="POST" action="{{ request.path }}" id="frmlogin" >
+						<div class="panel panel-body login-form">
+							<div class="text-center">
+								<div class="icon-object border-slate-300 text-slate-300"><i class="icon-reading"></i></div>
+								<h5 class="content-group">Logea tu cuenta <small class="display-block">Ingresa tus credenciales</small></h5>
+							</div>
+
+
+                            {% csrf_token %}
+                            {{ nexto|safe }}
+
+                            <div class="form-group has-feedback has-feedback-left">
+                                {{ form.usuario.errors }}
+                                {{ form.usuario }}
+								<div class="form-control-feedback">
+									<i class="icon-user text-muted"></i>
+								</div>
+							</div>
+
+							<div class="form-group has-feedback has-feedback-left">
+                                {{ form.password.errors }}
+                                {{ form.password }}
+
+								<div class="form-control-feedback">
+									<i class="icon-lock2 text-muted"></i>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<button type="submit" class="btn btn-primary btn-block">Ingresar <i class="icon-circle-right2 position-right"></i></button>
+							</div>
+
+                            {% for message in messages %}
+                                <label class="validation-error-label">{{ message }}</label>
+
+                            {% endfor %}
+
+							<div class="text-center">
+								<a href="login_password_recover.html">Olvidaste tu contraseña?</a>
+							</div>
+						</div>
+					</form>
+					<!-- /simple login form -->
+
+
+					<!-- Footer -->
+					<div class="footer text-muted text-center">
+						<!--&copy; 2015. <a href="#">Limitless Web App Kit</a> by <a href="http://themeforest.net/user/Kopyov" target="_blank">Eugene Kopyov</a>-->
+					</div>
+					<!-- /footer -->
+
+				</div>
+				<!-- /content area -->
+
+			</div>
+			<!-- /main content -->
+
+		</div>
+		<!-- /page content -->
+
+	</div>
+	<!-- /page container -->
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

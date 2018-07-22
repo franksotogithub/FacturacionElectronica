@@ -71,7 +71,7 @@
     </script>
      {% block mainjs %}
         <script type="text/javascript" src="{% static 'custom' %}/js/app.js?v=0.2" id="app-js" data-require=""></script>
-    {% endblock %}
+     {% endblock %}
 
 
 </head>
@@ -82,7 +82,16 @@
     </div>
 
     <script type="text/javascript">
-        //INEI.csrf_token = $.trim($("#csrf_token").find('input').val());
+        App.csrf_token = $.trim($("#csrf_token").find('input').val());
+
+        App.locale= {
+         //format: 'DD/MM/YYYY',
+         format: 'YYYY-MM-DD',
+         monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+         monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+         daysOfWeek: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+         weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
+        };
     </script>
 	<!-- Main navbar -->
 	<div class="navbar navbar-inverse navbar-fixed-top bg-{{ color }}">

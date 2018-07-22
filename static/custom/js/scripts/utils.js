@@ -252,7 +252,15 @@ var $utils = {
         keys_columns.push(el);
         });
         return keys_columns;
+    },
+
+    tablaPaginada : function (tabla,columns,url,data){
+
+
     }
+
+
+
 
 
 };

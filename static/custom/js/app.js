@@ -4,8 +4,8 @@ var App = App || {};
     var require = (function () {
         function require() {
             var version = 20;
-            this.base_url = "http://localhost:8051/";
-            this.server = "http://localhost:8051/";
+            this.base_url = "http://localhost:8050/";
+            this.server = "http://localhost:8050/";
             this.script = this.base_url + "static/custom/js/scripts/";
             this.requiredFiles = ['utils.js', 'services.js'];
 
