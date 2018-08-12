@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser,BaseUserManager,PermissionsMixin
+from modulos.models import Rol ,Permiso
 # Create your models here.
 
 class UserManager (BaseUserManager,models.Manager):
@@ -31,6 +32,7 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     fecha_creado = models.DateTimeField(auto_now_add=True)
     fecha_modificado = models.DateTimeField(auto_now=True)
     avatar = models.URLField(max_length=255, blank=True, null=True, default=None)
+    rol= models.ForeignKey(Rol,blank=True, null=True, on_delete=False)
 
     objects = UserManager()
     USERNAME_FIELD = 'usuario'

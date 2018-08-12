@@ -26,7 +26,7 @@ $utils.facturas.crearTablaComprobantes=function(tabla){
             'serie':serie,
             'numdoc':numdoc,
             'razonsocial':razonsocial,
-            'tipodoc':'03',
+            'tipodoc':'01',
             'estado':estado,
             'fecha':fecha
         }

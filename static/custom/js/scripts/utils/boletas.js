@@ -101,7 +101,6 @@ $utils.boletas.crearTablaDetalleComprobante = function (tabla, data) {
 }
 
 $utils.boletas.crearDetalleComprobante = function (cell, tabla) {
-
     var $row = $(cell).closest('tr');
     var cfnumser=$row.attr('cfnumser');
     var cfnumdoc=$row.attr('cfnumdoc');
@@ -109,7 +108,6 @@ $utils.boletas.crearDetalleComprobante = function (cell, tabla) {
     $utils.boletas.cfnumser = cfnumser;
     $utils.boletas.cfnumdoc = cfnumdoc;
     $utils.boletas.tipodoc  = tipodoc ;
-
     var datax={
     'cfnumser'            : cfnumser ,
     'cfnumdoc'            : cfnumdoc  ,

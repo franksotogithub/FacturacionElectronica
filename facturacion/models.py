@@ -17,7 +17,6 @@ class TipoComprobante ( models.Model):
     def __str__(self):
         return self.descripcion
 
-
 class ComprobanteCab(models.Model):
     id = models.AutoField(db_column='ID',primary_key=True)
     cffecdoc = models.DateTimeField(db_column='CFFECDOC', blank=True, null=True)  # Field name made lowercase.
@@ -40,8 +39,8 @@ class ComprobanteCab(models.Model):
     tipodoc_comprobante = models.CharField(db_column='TIPODOC_COMPROBANTE', max_length=2, blank=True, null=True)  # Field name made lowercase.
     cfnumser = models.CharField(db_column='CFNUMSER', max_length=4)  # Field name made lowercase.
     cfnumdoc = models.CharField(db_column='CFNUMDOC', max_length=8)  # Field name made lowercase.
-    tip_doc_receptor = models.CharField(db_column='TIP_DOC_RECEPTOR', max_length=1, blank=True, null=True)  # Field name made lowercase.
-    nro_doc_receptor = models.CharField(db_column='NRO_DOC_RECEPTOR', max_length=15, blank=True, null=True)  # Field name made lowercase.
+    tip_doc_receptor = models.CharField(db_column='TIP_DOC_RECEPTOR', max_length=1, blank=True, null=True)  # Field name made lowercase.   -->OJO AQI HUBO UN CHANGE
+    nro_doc_receptor = models.CharField(db_column='NRO_DOC_RECEPTOR', max_length=15, blank=True, null=True)  # Field name made lowercase. -->OJO AQI HUBO UN CHANGE
     cfcodcli = models.CharField(db_column='CFCODCLI', max_length=11, blank=True, null=True)  # Field name made lowercase.
     cfnombre = models.CharField(db_column='CFNOMBRE', max_length=100, blank=True, null=True)  # Field name made lowercase.
     direccion_receptor = models.CharField(db_column='DIRECCION_RECEPTOR', max_length=100, blank=True, null=True)  # Field name made lowercase.
@@ -116,10 +115,7 @@ class ComprobanteCab(models.Model):
     departamento_pventa = models.CharField(db_column='DEPARTAMENTO_PVENTA', max_length=60, blank=True, null=True)  # Field name made lowercase.
     distrito_pventa = models.CharField(db_column='DISTRITO_PVENTA', max_length=60, blank=True, null=True)  # Field name made lowercase.
     pais_pventa = models.CharField(db_column='PAIS_PVENTA', max_length=2, blank=True, null=True)  # Field name made lowercase.
-    #flg_anula = models.IntegerField(db_column='FLG_ANULA', blank=True, null=True)
-    #fec_anula = models.DateTimeField(db_column='FEC_ANULA', blank=True, null=True)
-    #motivo_anula = models.CharField(db_column='MOTIVO_ANULA',max_length=250, blank=True, null=True)
-    #estado_anula = models.CharField(db_column='ESTADO_ANULA',max_length=250, blank=True, null=True)
+
 
     class Meta:
         managed = True
@@ -160,8 +156,6 @@ class ComprobanteDet(models.Model):
         managed = True
         db_table = 'COMPROBANTE_DET'
         unique_together = (('dfnumser', 'dfnumdoc', 'tipodoc_comprobante', 'orden_item'),)
-
-
 
 class ComprobanteBaja(models.Model):
     id=models.AutoField(db_column='ID', primary_key=True)
