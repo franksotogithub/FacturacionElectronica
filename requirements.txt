@@ -28,3 +28,4 @@ six==1.11.0
 urllib3==1.23
 webencodings==0.5.1
 xhtml2pdf==0.2.2
+num2words==0.5.7
