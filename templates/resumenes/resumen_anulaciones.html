@@ -1,0 +1,298 @@
+{% extends 'wrapper.html' %}
+{% load  staticfiles %}
+{% block customcss %}
+    <style>
+    /*.dataTables_wrapper .datatable-header {
+            display: none;
+        }*/
+
+    table.dataTable thead tr th {
+    word-wrap: break-word;
+    word-break: break-all;
+    }
+
+    table.dataTable tbody tr td {
+        word-wrap: break-word;
+        word-break: break-all;
+    }
+
+
+  #tabla_detalle td, #tabla_detalle th{
+            white-space: normal;
+        }
+
+    </style>
+{% endblock %}
+
+{% block modals-view %}
+
+    <div id="modal_detalle_factura" class="modal fade in">
+         <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h6 class="modal-title text-center">
+                        <div class="titulo_modal">Detalle de Resumen</div>
+
+                    </h6>
+                </div>
+
+                <div class="modal-body" >
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="control-label col-lg-1"> F.de Emision </label>
+                            <div class="col-lg-3">
+                                <input type="text" class="form-control"   id="cffecdoc" disabled>
+                            </div>
+                            <label class="control-label col-lg-1"> Doc </label>
+                            <div class="col-lg-3">
+                                <input type="text" class="form-control"   id="cfnumdoc" disabled>
+                            </div>
+
+                            <label class="control-label col-lg-1"> Estado </label>
+                            <div class="col-lg-3">
+                                <input type="text" class="form-control"  id="estado_resumen" disabled>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                          <table class="table datatable-basic" id="tabla_detalle" style="width:880px;" >
+                            <thead class="bg-purple ">
+                                <th width="250">TIPO DOC.</th>
+                                <th width="100">SERIE</th>
+                                <th width="150">NUMERO DOC.</th>
+                                <th width="300">MOTIVO BAJA</th>
+
+                            </thead>
+                            <tbody></tbody>
+                          </table>
+                        </div>
+
+
+                    </div>
+
+
+
+
+                </div>
+                <div class="modal-footer ">
+                    <!--<button type="button" class="btn btn-primary"  id="enviar_correo"><li class="fa fa-glyphicon-envelope"> ENVIAR CORREO</li> </button>-->
+                    <button type="button" class="btn bg-info"  id="descargar_xml"><li class="fa fa-file-text"> DESCARGAR XML</li> </button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">CANCELAR<li class="icon-close2"> </li> </button>
+                </div>
+
+            </div>
+         </div>
+     </div>
+
+
+    <!--
+    <div id="modal_detalle_factura" class="modal fade">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+
+                    <h6 class="modal-title text-center">
+                        Detalle
+                    </h6>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <table class="table datatable-basic" id="tabla_detalle" style='width:100%'>
+                                <thead class="bg-indigo-700">
+                                <tr>
+
+                                </tr>
+
+                                </thead>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success">DESCARGAR PDF</button>
+                    <button type="button" class="btn btn-primary">DESCARGAR XML</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">CERRAR</button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>-->
+{% endblock %}
+{% block actions-table-view %}
+        <div class="form-group col-xs-12 col-sm-12 col-md-12">
+            <table >
+                <tr>
+                    <td width="200px">
+                        <label>Fecha:</label>
+                        <div class="input-group">
+                        <span class="input-group-addon"><i class="icon-calendar22"></i></span>
+                        <input type="text" class="form-control " id="fecha" valor="">
+                        </div>
+                    </td>
+
+                    <td width="300px">
+                        <label>Num doc:</label>
+                        <input type="text" class="form-control "  id="nomDocResumen" placeholder="NUMERO DOCUMENTO">
+                    </td>
+
+                    <!--<td width="450px">
+                        <label>Cliente:</label>
+                        <input type="text" class="form-control "  id="razonsocial" placeholder="RAZON SOCIAL O NOMBRE">
+                    </td>-->
+
+                    <td>
+                        <label>Estado:</label>
+                        <select class="form-control "  id="estado" >
+
+                        </select>
+
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+{% endblock %}
+
+{% block table-view %}
+<div class="panel-body" id="table-view">
+       <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12">
+              <table class="table datatable-basic" id="tabla_facturas">
+                <thead class="bg-primary">
+                  <tr>
+                      <th width="100px">FECHA EMISION</th>
+                      <th>NRO SERIE</th>
+                      <th>NRO DOCUMENTO</th>
+                      <th>ESTADO</th>
+                      <th>NRO REGISTROS</th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+          </div>
+       </div>
+        <div class="row">
+            <button type="button" class="btn bg-success"  id="generar" disabled ><li class="fa fa-file-text"> GENERAR RESUMEN</li> </button>
+        </div>
+   </div>
+{% endblock %}
+
+
+{% block requirejs %}
+    <script type="text/javascript">
+        var App = {
+            filerequired: {
+                service: ['ajax', 'comprobante'],
+                utils: ['ra']
+            }
+        };
+    </script>
+{% endblock %}
+
+{% block customjs %}
+<script type="text/javascript">
+
+    var cliente='';
+    var fecha='';
+     var fechaIni='';
+    var fechaFin='';
+    $(document).ready(function (e) {
+        var options= new Object();
+        var tablaFacturas = $('#tabla_facturas');
+        var tablaDetalle = $('#tabla_detalle');
+        var modal = $('#modal_detalle_factura');
+        var ESTADO_TODOS='';
+
+        options.estado=ESTADO_TODOS;
+        options.fechaIni='';
+        options.fechaFin='';
+        options.nomDocResumen='';
+        var $row = undefined;
+        var resumen= new Object();
+        resumen.numser='';
+        resumen.numdoc='';
+        resumen.tipoResumen='';
+
+        $('#fecha').daterangepicker({
+
+                startDate: moment(),
+                locale: App.locale,
+            },
+
+            function (start, end) {
+                options.fechaIni = start.format('YYYY-MM-DD');
+                options.fechaFin = end.format('YYYY-MM-DD');
+                $utils.ra.crearTablaComprobantes(tablaFacturas, options);
+            }
+        );
+
+        $('#tabla_facturas tbody').on('click', 'tr', function (e) {
+            $row = $(this);
+            resumen.numser=$row.attr('numser_resumen');
+            resumen.numdoc=$row.attr('numdoc_resumen');
+            resumen.estado=$row.attr('estado_resumen_id');
+            resumen.tipoResumen=$row.attr('tipo_resumen');
+
+            $("#tabla_facturas tbody > tr").removeClass("bg-success");
+            $(this).addClass("bg-success");
+
+            if (resumen.estado=='03' || resumen.estado=='01' || resumen.estado=='02')
+                $('#generar').prop('disabled',true);
+            else
+                $('#generar').prop('disabled',false);
+
+        });
+
+         $('#generar').on('click',function(e){
+            $utils.ra.generarResumen(resumen,$row);
+        });
+
+        $('#tabla_facturas tbody').on('dblclick', 'tr', function (e) {
+           var $row = $(this);
+            resumen.numser=$row.attr('numser_resumen');
+            resumen.numdoc=$row.attr('numdoc_resumen');
+            resumen.estado=$row.attr('estado_resumen_id');
+            resumen.tipoResumen=$row.attr('tipo_resumen');
+
+            $utils.ra.crearDetalleComprobante(resumen, tablaDetalle, modal);
+
+        });
+
+        $('#nomDocResumen').change(function () {
+            options.nomDocResumen=$('#nomDocResumen').val();
+            $utils.ra.crearTablaComprobantes(tablaFacturas, options);
+        });
+
+        $('#estado').change(function () {
+            options.estado=$('#estado option:selected').val();
+            $utils.ra.crearTablaComprobantes(tablaFacturas, options);
+        });
+
+        $('#descargar_xml').on('click',function () {
+            $utils.ra.descargarXml();
+        });
+
+
+
+        $utils.ra.crearcombo($('#estado'));
+        $utils.ra.crearTablaComprobantes(tablaFacturas,options);
+
+
+    });
+</script>
+{% endblock %}

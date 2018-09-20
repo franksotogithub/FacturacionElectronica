@@ -256,9 +256,7 @@ var $utils = {
 
     tablaPaginada : function (tabla,columns,url,data){
 
-
-    }
-
+    },
 
 
 

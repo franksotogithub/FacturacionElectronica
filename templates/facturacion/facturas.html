@@ -149,6 +149,7 @@
                         </div>
                     </div>
 
+
                     <div class="row">
                           <div class="form-group">
                             <label class="control-label col-lg-2"> Op.Gravadas </label>
@@ -188,47 +189,6 @@
 
 
 
-    <!--
-    <div id="modal_detalle_factura" class="modal fade">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header bg-primary">
-
-                    <h6 class="modal-title text-center">
-                        Detalle
-                    </h6>
-                </div>
-
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-12">
-                            <table class="table datatable-basic" id="tabla_detalle" style='width:100%'>
-                                <thead class="bg-indigo-700">
-                                <tr>
-
-                                </tr>
-
-                                </thead>
-
-                            </table>
-
-                        </div>
-
-                    </div>
-                </div>
-
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success">DESCARGAR PDF</button>
-                    <button type="button" class="btn btn-primary">DESCARGAR XML</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">CERRAR</button>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>-->
 {% endblock %}
 {% block actions-table-view %}
         <div class="form-group col-xs-12 col-sm-12 col-md-12">
@@ -257,9 +217,11 @@
                         <label>Estado:</label>
                         <select class="form-control "  id="estado" >
                             <option value="">TODOS</option>
-                            <option value="POR ENVIAR">POR ENVIAR</option>
-                            <option value="APROBADO">APROBADO</option>
-
+                            <option value="00">POR GENERAR DOCUMENTO</option>
+                            <option value="01">DOCUMENTO GENERADO</option>
+                            <option value="03">APROBADO</option>
+                            <option value="06">CON ERRORES</option>
+                            <option value="06">RECHAZADO</option>
                         </select>
 
                     </td>
@@ -314,6 +276,10 @@
 
     var cliente='';
     var fecha='';
+    var fechaIni='';
+    var fechaFin='';
+    var ESTADO_TODOS='';
+    var estado='';
     $(document).ready(function (e) {
 
          var tablaFacturas =$('#tabla_facturas');
@@ -321,17 +287,16 @@
          var modal=$('#modal_detalle_factura');
 
         $('#fecha').daterangepicker({
-            singleDatePicker: true,
+            //singleDatePicker: true,
             startDate: moment(),
             locale:App.locale,
-
         },
 
             function(start, end) {
-            $('#fecha').attr( 'valor',start.format('YYYY-MM-DD'));
-
+                fechaIni=start.format('YYYY-MM-DD') ;
+                fechaFin=end.format('YYYY-MM-DD') ;
+                $utils.facturas.crearTablaComprobantes(tablaFacturas,fechaIni,fechaFin);
             }
-
         );
 
         $('#tabla_facturas tbody').on('click','tr',function (e) {
@@ -341,15 +306,13 @@
         });
 
         $('#tabla_facturas tbody').on('dblclick','tr',function (e) {
-
             $utils.facturas.crearDetalleComprobante($(this),tablaDetalle,modal);
-            //modal.modal('show');
         });
         
         $('#descargar_pdf').on('click',function () {
-
             $utils.facturas.descargarPdf();
         });
+
 
         $('#descargar_xml').on('click',function () {
             $utils.facturas.descargarXml();
@@ -360,25 +323,24 @@
         });
 
         $('#serie').change(function () {
-            $utils.facturas.crearTablaComprobantes(tablaFacturas);
+            $utils.facturas.crearTablaComprobantes(tablaFacturas,fechaIni,fechaFin,estado);
         });
         $('#numdoc').change(function () {
-            $utils.facturas.crearTablaComprobantes(tablaFacturas);
+            $utils.facturas.crearTablaComprobantes(tablaFacturas,fechaIni,fechaFin,estado);
         });
         $('#razonsocial').change(function () {
-            $utils.facturas.crearTablaComprobantes(tablaFacturas);
+            $utils.facturas.crearTablaComprobantes(tablaFacturas,fechaIni,fechaFin,estado);
         });
 
-        $('#fecha').change(function(){
-            $utils.facturas.crearTablaComprobantes(tablaFacturas);
-        });
 
 
         $('#estado').change(function(){
-            $utils.facturas.crearTablaComprobantes(tablaFacturas);
+            estado=$('#estado option:selected').val();
+            $utils.facturas.crearTablaComprobantes(tablaFacturas,fechaIni,fechaFin,estado);
         });
 
-        $utils.facturas.crearTablaComprobantes(tablaFacturas);
+        $utils.facturas.crearCombo($('#estado'));
+        $utils.facturas.crearTablaComprobantes(tablaFacturas,fechaIni,fechaFin,ESTADO_TODOS);
 
 
     });

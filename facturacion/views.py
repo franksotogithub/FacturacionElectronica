@@ -19,7 +19,7 @@ class FacturasView(TemplateView):
 
 class ConsultarComprobanteView(TemplateView):
     template_name = 'facturacion/consultar_comprobante_cliente.html'
-    @method_decorator(permission)
+    #@method_decorator(permission)
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         return self.render_to_response(context, status=403)
@@ -38,3 +38,4 @@ class NotasCreditoView(TemplateView):
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         return self.render_to_response(context, status=403)
+

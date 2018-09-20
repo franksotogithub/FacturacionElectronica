@@ -5,18 +5,14 @@
     /*.dataTables_wrapper .datatable-header {
             display: none;
         }*/
-
     table.dataTable thead tr th {
     word-wrap: break-word;
     word-break: break-all;
     }
-
     table.dataTable tbody tr td {
         word-wrap: break-word;
         word-break: break-all;
     }
-
-
   #tabla_detalle td, #tabla_detalle th{
             white-space: normal;
         }
@@ -170,7 +166,7 @@
                 </div>
                 <div class="modal-footer ">
                     <button type="button" class="btn btn-primary"  id="descargar_pdf"><li class="fa fa-file-pdf-o"> DESCARGAR PDF</li> </button>
-                    <button type="button" class="btn bg-info"  id="descargar_xml"><li class="fa fa-file-text"> DESCARGAR XML</li> </button>
+                    <!--<button type="button" class="btn bg-info"  id="descargar_xml"><li class="fa fa-file-text"> DESCARGAR XML</li> </button>-->
                     <button type="button" class="btn btn-danger" data-dismiss="modal">CANCELAR<li class="icon-close2"> </li> </button>
                 </div>
 
@@ -262,26 +258,29 @@
 <script type="text/javascript">
 
 
-    var cliente='';
+       var cliente='';
     var fecha='';
+    var fechaIni='';
+    var fechaFin='';
+    var ESTADO_TODOS='';
+    var estado='';
     $(document).ready(function (e) {
 
-         var tablaFacturas =$('#tabla_facturas');
+                 var tablaFacturas =$('#tabla_facturas');
          var tablaDetalle =$('#tabla_detalle');
          var modal=$('#modal_detalle_factura');
 
         $('#fecha').daterangepicker({
-            singleDatePicker: true,
+            //singleDatePicker: true,
             startDate: moment(),
             locale:App.locale,
-
         },
 
             function(start, end) {
-            $('#fecha').attr( 'valor',start.format('YYYY-MM-DD'));
-
+                fechaIni=start.format('YYYY-MM-DD') ;
+                fechaFin=end.format('YYYY-MM-DD') ;
+                $utils.boletas.crearTablaComprobantes(tablaFacturas,fechaIni,fechaFin);
             }
-
         );
 
         $('#tabla_facturas tbody').on('click','tr',function (e) {
@@ -291,15 +290,13 @@
         });
 
         $('#tabla_facturas tbody').on('dblclick','tr',function (e) {
-
             $utils.boletas.crearDetalleComprobante($(this),tablaDetalle,modal);
-
         });
         
         $('#descargar_pdf').on('click',function () {
-
             $utils.boletas.descargarPdf();
         });
+
 
         $('#descargar_xml').on('click',function () {
             $utils.boletas.descargarXml();
@@ -310,28 +307,24 @@
         });
 
         $('#serie').change(function () {
-            $utils.boletas.crearTablaComprobantes(tablaFacturas);
+            $utils.boletas.crearTablaComprobantes(tablaFacturas,fechaIni,fechaFin,estado);
         });
         $('#numdoc').change(function () {
-            $utils.boletas.crearTablaComprobantes(tablaFacturas);
+            $utils.boletas.crearTablaComprobantes(tablaFacturas,fechaIni,fechaFin,estado);
         });
         $('#razonsocial').change(function () {
-            $utils.boletas.crearTablaComprobantes(tablaFacturas);
+            $utils.boletas.crearTablaComprobantes(tablaFacturas,fechaIni,fechaFin,estado);
         });
 
-        $('#fecha').change(function(){
-            //console.log('fecha-->',$('#fecha').daterangepicker);
-            $utils.boletas.crearTablaComprobantes(tablaFacturas);
-        });
 
 
         $('#estado').change(function(){
-                //console.log('estado-->',$('#estado option:selected').val());
-            $utils.boletas.crearTablaComprobantes(tablaFacturas);
-
+            estado=$('#estado option:selected').val();
+            $utils.boletas.crearTablaComprobantes(tablaFacturas,fechaIni,fechaFin,estado);
         });
 
-        $utils.boletas.crearTablaComprobantes(tablaFacturas);
+        $utils.boletas.crearCombo($('#estado'));
+        $utils.boletas.crearTablaComprobantes(tablaFacturas,fechaIni,fechaFin,ESTADO_TODOS);
 
 
     });

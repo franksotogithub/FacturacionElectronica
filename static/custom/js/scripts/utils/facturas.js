@@ -4,9 +4,11 @@ $utils.facturas.datatableDetalle = undefined;
 $utils.facturas.cfnumser=undefined
 $utils.facturas.cfnumdoc=undefined
 $utils.facturas.tipodoc=undefined
+$utils.facturas.nomArchivo='';
+$utils.facturas.TIPOCOMPROBANTE='01';
 
 
-$utils.facturas.crearTablaComprobantes=function(tabla){
+$utils.facturas.crearTablaComprobantes=function(tabla,fechaIni,fechaFin,estado){
         var columns = [
                     {data: 'cffecdoc' ,'searchable':false},
                     {data:'cfnumser' ,'searchable':true},
@@ -14,21 +16,24 @@ $utils.facturas.crearTablaComprobantes=function(tabla){
                     {data: 'cfnombre' ,'searchable':true},
                     {data: 'estado_comprobante' ,'searchable':true},
 
+
         ];
         var slug = 'facturacion-api/comprobantes/listar';
         var serie=$('#serie').val();
         var numdoc=$('#numdoc').val();
         var razonsocial=$('#razonsocial').val();
-        var estado=$('#estado option:selected').val();
-        var fecha =$('#fecha').attr('valor');
 
+        //var fecha =$('#fecha').attr('valor');
+        var fechaIni =fechaIni;
+        var fechaFin =fechaFin;
         var data={
             'serie':serie,
             'numdoc':numdoc,
             'razonsocial':razonsocial,
-            'tipodoc':'01',
+            'tipodoc':$utils.facturas.TIPOCOMPROBANTE,
             'estado':estado,
-            'fecha':fecha
+            'fechaIni':fechaIni,
+            'fechaFin':fechaFin
         }
 
         if (!($utils.facturas.datatableContenido === undefined))
@@ -94,10 +99,11 @@ $utils.facturas.crearTablaDetalleComprobante = function (tabla, data) {
                 autoWidth: false,
                 ordering: false,
                 searching: false,
-
                 scrollX: true,
         });
 }
+
+
 
 
 
@@ -137,9 +143,7 @@ $utils.facturas.crearDetalleComprobante = function (cell, tabla) {
         $('#sumatoria_igv').val(data.cabecera.sumatoria_igv);
         $('#sumatoria_isc').val(data.cabecera.sumatoria_isc);
         $('#importe_total_venta').val(data.cabecera.importe_total_venta);
-
-
-
+        $utils.facturas.nomArchivo=data.cabecera.nom_archivo;
         $utils.facturas.crearTablaDetalleComprobante(tabla,data.detalle);
 
     });
@@ -149,11 +153,11 @@ $utils.facturas.crearDetalleComprobante = function (cell, tabla) {
 
 $utils.facturas.descargarPdf = function () {
 
-    var cfnumser=$utils.facturas.cfnumser;
+    /*var cfnumser=$utils.facturas.cfnumser;
     var cfnumdoc=$utils.facturas.cfnumdoc;
     var tipodoc =$utils.facturas.tipodoc ;
-
-    $services.comprobante.descargarPdf(cfnumser,cfnumdoc,tipodoc,function (error){
+*/
+    $services.comprobante.descargarPdf($utils.facturas.nomArchivo,function (error){
 
         if(error==true){
             swal('No se puede descargar el archivo, es posible q no exista');
@@ -164,14 +168,24 @@ $utils.facturas.descargarPdf = function () {
 
 
 $utils.facturas.descargarXml = function () {
-    var cfnumser=$utils.facturas.cfnumser;
+    /*var cfnumser=$utils.facturas.cfnumser;
     var cfnumdoc=$utils.facturas.cfnumdoc;
     var tipodoc =$utils.facturas.tipodoc ;
-
-    $services.comprobante.descargarXml(cfnumser,cfnumdoc,tipodoc,function (error){
+*/
+    $services.comprobante.descargarXml($utils.facturas.nomArchivo,function (error){
         if(error==true){
             swal('No se puede descargar el archivo, es posible q no exista');
         }
+    });
+}
+
+$utils.facturas.crearCombo = function (select){
+    var html='<option value="" selected>TODOS</option>';
+    $services.comprobante.getEstadosDocumentos(function (data) {
+        data.forEach(function (el) {
+            html+='<option value="'+el.id+'">'+el.nombre+'</option>';
+        })
+        select.html(html);
     });
 }
 

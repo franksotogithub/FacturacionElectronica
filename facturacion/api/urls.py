@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from rest_framework.routers import DefaultRouter
-from .views import UsuarioViewSet ,DescargarViewSet , ComprobanteViewSet
+from .views import UsuarioViewSet ,DescargarViewSet , ComprobanteViewSet ,EstadoViewSet,ResumenViewSet
     #FacturaElectronicaViewSet ,ExportarFacturaElectronicaView ,
 
 #from .views import RegistroCajaViewSet, AsignarSupViewSet, UsuariosViewSet, AsignarDigViewSet, LoteAsignacionViewSet, \
@@ -11,6 +11,8 @@ router = DefaultRouter()
 router.register(r'usuarios',UsuarioViewSet ,base_name='facturas')
 router.register(r'descargas', DescargarViewSet ,base_name='descargas')
 router.register(r'comprobantes', ComprobanteViewSet ,base_name='comprobantes')
+router.register(r'estados', EstadoViewSet ,base_name='estados')
+router.register(r'resumenes', ResumenViewSet ,base_name='resumenes')
 
 #router.register(r'facturas',FacturaElectronicaViewSet ,base_name='facturas')
 urlpatterns = [

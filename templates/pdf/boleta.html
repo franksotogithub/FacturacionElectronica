@@ -1,0 +1,188 @@
+{% extends 'pdf/base.html' %}
+{% load staticfiles %}
+{% load qr_code %}
+
+{% block titulo %}
+    <script type="text/javascript">
+    </script>
+
+{% endblock %}
+
+{% block documento %}
+
+    <table>
+    <tbody>
+    <tr >
+        <td>
+                <table style="border:0px ">
+                        <tbody>
+                        <tr >
+                            <td>
+                                 <img src="{{img}}\logo.png" alt="" >
+
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td> {{ cab.urbanizacion_emisor }} - {{ cab.distrito_emisor }} - {{cab.provincia_emisor  }} - {{cab.departamento_emisor  }}</td>
+                        </tr>
+                        <tr >
+                            <td>       {{ cab.direccion_emisor }} </td>
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+
+        </td>
+
+        <td style="border:1px solid black;padding: 2px 5px 2px 5px; width: 400px; text-align: center ">
+           <h2 style="margin-top: 5px; font-size: 12px;">
+                R.U.C. N° {{cab.raz_social_emisor}}
+            </h2>
+
+            <h2 style="margin-bottom: 0px; font-size: 12px;">
+                BOLETA ELECTRONICA
+            </h2>
+
+            <h2 style="margin-bottom: 5px; font-size: 12px;">
+                 N° {{cab.cfnumser}}-{{cab.cfnumdoc}}
+            </h2>
+        </td>
+    </tr>
+
+    </tbody>
+
+    </table>
+
+    <br>
+
+
+    <table>
+        <tr >
+            <td style="border:1px solid black;padding: 2px 5px 2px 5px;  ">
+                    <table style="border:0px ">
+                        <tbody>
+                        <tr >
+                            <td>RUC:</td> <td> {{cab.nro_doc_receptor}}</td> <td>Fecha: </td> <td>{{cab.cffecdoc}} </td>
+
+                        </tr>
+                        <tr>
+                            <td> Nombre Cliente:</td> <td colspan="3"> {{cab.cfnombre}}</td>
+                        </tr>
+                        <tr >
+                            <td> Dirección:</td> <td colspan="3"> {{cab.direccion_receptor}}</td>
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+            </td>
+        </tr>
+    </table>
+
+
+    <br>
+
+    <table style="border:1px solid black; border-collapse: collapse; text-align: center; ">
+         <thead>
+            <tr style="padding: 2px 5px 0px 5px;">
+                <td style="width: 40px">Item</td>
+                <td style="width: 60px">Cantidad</td>
+                <td style="width: 50px">Unidad</td>
+                <td style="width: 100px">Codigo</td>
+                <td style="width: 500px">Descripcion</td>
+                <td style="width: 100px">P. Unitario</td>
+                <td style="width: 100px">Subtotal</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for d in detalles %}
+
+            <tr style="padding: 2px 5px 0px 5px;">
+                <td >{{d.orden_item}}</td>
+                <td >{{d.cant_item }}</td>
+                <td >{{d.um_item}}</td>
+                <td >{{d.cod_item}}</td>
+                <td >{{d.nom_item}}</td>
+                <td >{{d.imp_vu_item}}</td>
+                <td >{{d.imp_total_item}}</td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+    <br>
+    <h3>{{ cab.leyenda }}</h3>
+
+    <br>
+
+    <table >
+    <tbody>
+    <tr>
+        <td>
+            <table >
+            <tbody>
+            <tr>
+                <td><img src="{{qr_code}}" alt="" > </td>
+            </tr>
+
+            <tr>
+                <td> </td>
+            </tr>
+            Representación impresa de la FACTURA ELECTRONICA. Autorizado mediante resolución 032-005-0000421/SUNAT
+            </tbody>
+
+              </table>
+        </td>
+
+        <td style="width: 400px">
+            <table style="border:1px solid black;">
+
+                <tbody>
+                    <tr >
+                        <td style="padding: 2px 5px 0px 5px; ">Total Ope.Gravadas</td><td style="text-align: right;padding: 2px 5px 0px 5px;" >{{ cab.tvv_imp_ope_gravadas }}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 2px 5px 0px 5px;">Total Ope.Inafectas</td><td style="text-align: right;padding: 2px 5px 0px 5px;">{{ cab.tvv_imp_ope_inafectas}}</td>
+                    </tr>
+                    <!--
+                    <tr>
+                        <td style="padding: 2px 5px 0px 5px;">Total Ope. Exoneradas</td><td style="text-align: right;padding: 2px 5px 0px 5px;">{{ cab.tvv_imp_ope_exoneradas}}</td>
+                    </tr>-->
+
+                    <tr>
+                        <td style="padding: 2px 5px 0px 5px;">Total Descuentos</td><td  style="text-align: right;padding: 2px 5px 0px 5px;">{{ cab.importe_dsctos}}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 2px 5px 0px 5px;">Total IGV</td><td style="text-align: right;padding: 2px 5px 0px 5px;">{{ cab.sumatoria_igv }}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 2px 5px 0px 5px;">Total ISC</td><td style="text-align: right;padding: 2px 5px 0px 5px;">{{ cab.sumatoria_isc }}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 2px 5px 0px 5px;">TOTAL A PAGAR</td><td style="text-align: right;padding: 2px 5px 0px 5px;">s/. {{ cab.importe_total_venta }}</td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </td>
+    </tr>
+
+
+    </tbody>
+
+    </table>
+
+
+
+
+
+
+
+{% endblock %}
+

@@ -36,14 +36,11 @@ def permission(func):
             slug_consult2 = array[-1]
             if slug_consult2!='':
                 slug_consult=slug_consult2
-
             menux = Usuario.objects.get(id=request.user.id).rol.permiso_set.values('menu_id')
-
-
             cant_match = Menu.objects.filter(id__in=menux,slug=slug_consult, estado=True).count()
             #cant_match=menu.filter(slug=slug_consult).count()
-            print ('cant_match-->',cant_match)
-            print('slug-->', slug_consult)
+            #print ('cant_match-->',cant_match)
+            #print('slug-->', slug_consult)
 
             if cant_match>0:
                 if url_login == request.path:

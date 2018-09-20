@@ -14,8 +14,27 @@
     <tbody>
     <tr >
         <td>
-            <img src="{{img}}\logo.png" alt="" >
-            <!--<img src="something.jpg" alt="" />-->
+                <table style="border:0px ">
+                        <tbody>
+                        <tr >
+                            <td>
+                                 <img src="{{img}}\logo.png" alt="" >
+
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td> {{ cab.urbanizacion_emisor }} - {{ cab.distrito_emisor }} - {{cab.provincia_emisor  }} - {{cab.departamento_emisor  }}</td>
+                        </tr>
+                        <tr >
+                            <td>       {{ cab.direccion_emisor }} </td>
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+
         </td>
 
         <td style="border:1px solid black;padding: 2px 5px 2px 5px; width: 400px; text-align: center ">
@@ -102,12 +121,23 @@
 
     <br>
 
-
     <table >
     <tbody>
     <tr>
         <td>
+            <table >
+            <tbody>
+            <tr>
+                <td><img src="{{qr_code}}" alt="" > </td>
+            </tr>
 
+            <tr>
+                <td> </td>
+            </tr>
+            Representación impresa de la FACTURA ELECTRONICA. Autorizado mediante resolución 032-005-0000421/SUNAT
+            </tbody>
+
+              </table>
         </td>
 
         <td style="width: 400px">
@@ -142,9 +172,7 @@
             </table>
         </td>
     </tr>
-    <br>
 
-    <img src="{{qr_code}}" alt="" >
 
     </tbody>
 

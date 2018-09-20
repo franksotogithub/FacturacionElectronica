@@ -4,9 +4,11 @@ $utils.boletas.datatableDetalle = undefined;
 $utils.boletas.cfnumser=undefined
 $utils.boletas.cfnumdoc=undefined
 $utils.boletas.tipodoc=undefined
+$utils.boletas.nomArchivo='';
+$utils.boletas.TIPOCOMPROBANTE='07';
 
 
-$utils.boletas.crearTablaComprobantes=function(tabla){
+$utils.boletas.crearTablaComprobantes=function(tabla,fechaIni,fechaFin,estado){
         var columns = [
                     {data: 'cffecdoc' ,'searchable':false},
                     {data:'cfnumser' ,'searchable':true},
@@ -14,21 +16,24 @@ $utils.boletas.crearTablaComprobantes=function(tabla){
                     {data: 'cfnombre' ,'searchable':true},
                     {data: 'estado_comprobante' ,'searchable':true},
 
+
         ];
         var slug = 'facturacion-api/comprobantes/listar';
         var serie=$('#serie').val();
         var numdoc=$('#numdoc').val();
         var razonsocial=$('#razonsocial').val();
-        var estado=$('#estado option:selected').val();
-        var fecha =$('#fecha').attr('valor');
 
+        //var fecha =$('#fecha').attr('valor');
+        var fechaIni =fechaIni;
+        var fechaFin =fechaFin;
         var data={
             'serie':serie,
             'numdoc':numdoc,
             'razonsocial':razonsocial,
-            'tipodoc':'03',
+            'tipodoc':$utils.boletas.TIPOCOMPROBANTE,
             'estado':estado,
-            'fecha':fecha
+            'fechaIni':fechaIni,
+            'fechaFin':fechaFin
         }
 
         if (!($utils.boletas.datatableContenido === undefined))
@@ -45,8 +50,6 @@ $utils.boletas.crearTablaComprobantes=function(tabla){
 
 
             },
-
-
             createdRow: function (row, data, dataIndex) {
                   $(row).attr('cfnumser',data.cfnumser);
                   $(row).attr('cfnumdoc',data.cfnumdoc);
@@ -68,6 +71,7 @@ $utils.boletas.crearTablaComprobantes=function(tabla){
         });
 
     }
+
 
 $utils.boletas.crearTablaDetalleComprobante = function (tabla, data) {
         if (!($utils.boletas.datatableDetalle === undefined)) {
@@ -95,12 +99,16 @@ $utils.boletas.crearTablaDetalleComprobante = function (tabla, data) {
                 autoWidth: false,
                 ordering: false,
                 searching: false,
-
                 scrollX: true,
         });
 }
 
+
+
+
+
 $utils.boletas.crearDetalleComprobante = function (cell, tabla) {
+
     var $row = $(cell).closest('tr');
     var cfnumser=$row.attr('cfnumser');
     var cfnumdoc=$row.attr('cfnumdoc');
@@ -108,6 +116,7 @@ $utils.boletas.crearDetalleComprobante = function (cell, tabla) {
     $utils.boletas.cfnumser = cfnumser;
     $utils.boletas.cfnumdoc = cfnumdoc;
     $utils.boletas.tipodoc  = tipodoc ;
+
     var datax={
     'cfnumser'            : cfnumser ,
     'cfnumdoc'            : cfnumdoc  ,
@@ -119,19 +128,36 @@ $utils.boletas.crearDetalleComprobante = function (cell, tabla) {
 
     $services.comprobante.getComprobante(datax,function (data){
 
+        $('#cffecdoc').val(data.cabecera.cffecdoc);
+        $('#cfnumdoc').val(data.cabecera.cfnumdoc);
+        $('#estado_comprobante').val(data.cabecera.estado_comprobante);
+        $('#cfcodcli').val(data.cabecera.cfcodcli);
+        $('#nro_doc_receptor').val(data.cabecera.nro_doc_receptor);
+        $('#cfnombre').val(data.cabecera.cfnombre);
+        $('#moneda').val(data.cabecera.moneda);
+
+        $('#tvv_cod_ope_exoneradas').val(data.cabecera.tvv_cod_ope_exoneradas);
+        $('#total').val(data.cabecera.tvv_imp_ope_gravadas);
+        $('#tvv_imp_ope_gravadas').val(data.cabecera.tvv_imp_ope_gravadas);
+        $('#tvv_imp_ope_inafectas').val(data.cabecera.tvv_imp_ope_inafectas);
+        $('#sumatoria_igv').val(data.cabecera.sumatoria_igv);
+        $('#sumatoria_isc').val(data.cabecera.sumatoria_isc);
+        $('#importe_total_venta').val(data.cabecera.importe_total_venta);
+        $utils.boletas.nomArchivo=data.cabecera.nom_archivo;
         $utils.boletas.crearTablaDetalleComprobante(tabla,data.detalle);
 
     });
     $('#modal_detalle_factura').modal("show");
 }
 
+
 $utils.boletas.descargarPdf = function () {
 
-    var cfnumser=$utils.boletas.cfnumser;
+    /*var cfnumser=$utils.boletas.cfnumser;
     var cfnumdoc=$utils.boletas.cfnumdoc;
     var tipodoc =$utils.boletas.tipodoc ;
-
-    $services.comprobante.descargarPdf(cfnumser,cfnumdoc,tipodoc,function (error){
+*/
+    $services.comprobante.descargarPdf($utils.boletas.nomArchivo,function (error){
 
         if(error==true){
             swal('No se puede descargar el archivo, es posible q no exista');
@@ -139,15 +165,27 @@ $utils.boletas.descargarPdf = function () {
     });
 }
 
+
+
 $utils.boletas.descargarXml = function () {
-    var cfnumser=$utils.boletas.cfnumser;
+    /*var cfnumser=$utils.boletas.cfnumser;
     var cfnumdoc=$utils.boletas.cfnumdoc;
     var tipodoc =$utils.boletas.tipodoc ;
-
-    $services.comprobante.descargarXml(cfnumser,cfnumdoc,tipodoc,function (error){
+*/
+    $services.comprobante.descargarXml($utils.boletas.nomArchivo,function (error){
         if(error==true){
             swal('No se puede descargar el archivo, es posible q no exista');
         }
+    });
+}
+
+$utils.boletas.crearCombo = function (select){
+    var html='<option value="" selected>TODOS</option>';
+    $services.comprobante.getEstadosDocumentos(function (data) {
+        data.forEach(function (el) {
+            html+='<option value="'+el.id+'">'+el.nombre+'</option>';
+        })
+        select.html(html);
     });
 }
 

@@ -207,8 +207,7 @@
                         <label>Estado:</label>
                         <select class="form-control "  id="estado" >
                             <option value="">TODOS</option>
-                            <option value="POR ENVIAR">POR ENVIAR</option>
-                            <option value="APROBADO">APROBADO</option>
+
 
                         </select>
 
@@ -230,7 +229,7 @@
                   <tr>
                       <th width="100px">FECHA EMISION</th>
                       <th>NRO SERIE</th>
-                      <th>NRO FACTURA</th>
+                      <th>NRO DOCUMENTO</th>
                       <th width="300px">CLIENTE</th>
                       <th>ESTADO</th>
 
@@ -264,24 +263,27 @@
 
     var cliente='';
     var fecha='';
+    var fechaIni='';
+    var fechaFin='';
+    var ESTADO_TODOS='';
+    var estado='';
     $(document).ready(function (e) {
 
-         var tablaFacturas =$('#tabla_facturas');
+                  var tablaFacturas =$('#tabla_facturas');
          var tablaDetalle =$('#tabla_detalle');
          var modal=$('#modal_detalle_factura');
 
         $('#fecha').daterangepicker({
-            singleDatePicker: true,
+            //singleDatePicker: true,
             startDate: moment(),
             locale:App.locale,
-
         },
 
             function(start, end) {
-            $('#fecha').attr( 'valor',start.format('YYYY-MM-DD'));
-
+                fechaIni=start.format('YYYY-MM-DD') ;
+                fechaFin=end.format('YYYY-MM-DD') ;
+                $utils.notas_credito.crearTablaComprobantes(tablaFacturas,fechaIni,fechaFin);
             }
-
         );
 
         $('#tabla_facturas tbody').on('click','tr',function (e) {
@@ -291,15 +293,13 @@
         });
 
         $('#tabla_facturas tbody').on('dblclick','tr',function (e) {
-
             $utils.notas_credito.crearDetalleComprobante($(this),tablaDetalle,modal);
-
         });
         
         $('#descargar_pdf').on('click',function () {
-
             $utils.notas_credito.descargarPdf();
         });
+
 
         $('#descargar_xml').on('click',function () {
             $utils.notas_credito.descargarXml();
@@ -310,28 +310,24 @@
         });
 
         $('#serie').change(function () {
-            $utils.notas_credito.crearTablaComprobantes(tablaFacturas);
+            $utils.notas_credito.crearTablaComprobantes(tablaFacturas,fechaIni,fechaFin,estado);
         });
         $('#numdoc').change(function () {
-            $utils.notas_credito.crearTablaComprobantes(tablaFacturas);
+            $utils.notas_credito.crearTablaComprobantes(tablaFacturas,fechaIni,fechaFin,estado);
         });
         $('#razonsocial').change(function () {
-            $utils.notas_credito.crearTablaComprobantes(tablaFacturas);
+            $utils.notas_credito.crearTablaComprobantes(tablaFacturas,fechaIni,fechaFin,estado);
         });
 
-        $('#fecha').change(function(){
-            //console.log('fecha-->',$('#fecha').daterangepicker);
-            $utils.notas_credito.crearTablaComprobantes(tablaFacturas);
-        });
 
 
         $('#estado').change(function(){
-                //console.log('estado-->',$('#estado option:selected').val());
-            $utils.notas_credito.crearTablaComprobantes(tablaFacturas);
-
+            estado=$('#estado option:selected').val();
+            $utils.notas_credito.crearTablaComprobantes(tablaFacturas,fechaIni,fechaFin,estado);
         });
 
-        $utils.notas_credito.crearTablaComprobantes(tablaFacturas);
+        $utils.notas_credito.crearCombo($('#estado'));
+        $utils.notas_credito.crearTablaComprobantes(tablaFacturas,fechaIni,fechaFin,ESTADO_TODOS);
 
 
     });
