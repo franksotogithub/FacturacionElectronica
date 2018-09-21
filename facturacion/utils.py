@@ -23,7 +23,7 @@ import lxml.etree as  etree
 import pyqrcode
 from django.db import IntegrityError, transaction
 from django.db.models import F, Sum,Min,Q,Max
-
+from sunat.models import Documento
 from num2words.currency import parse_currency_parts, prefix_currency
 from num2words import num2words
 
@@ -374,7 +374,16 @@ def generar_txt_resumenes(tipo_resumen):
     resumenes=ResumenCab.objects.filter(tipo_resumen=tipo_resumen, estado_resumen_id=ComprobanteCab.POR_GENERAR_DOCUMENTO)
 
     for res in resumenes:
-        generar_resumen(res.numser_resumen,res.numdoc_resumen,tipo_resumen)
+        resultado   = generar_resumen(res.numser_resumen,res.numdoc_resumen,tipo_resumen)
+        nom_archivo = resultado['nom_archivo']
+        try:
+            doc_sunat = Documento.objects.get(nom_arch=nom_archivo)
+            doc_sunat.ind_situ = ComprobanteCab.DOCUMENTO_GENERADO
+            doc_sunat.save()
+        except:
+            continue
+
+
 
     #
     #file=res.ruc_emisor + '-' + res.tipo_resumen + '-' + res.numser_resumen+'-'+res.numdoc_resumen + '.RDI'
@@ -512,7 +521,6 @@ def leer_xml_respuesta(file):
 def leer_xml_envio(file):
     if not os.path.exists(settings.MEDIA_ROOT_FILES_XML_FIRMA):
         os.makedirs(settings.MEDIA_ROOT_FILES_XML_FIRMA)
-
     filepath = os.path.join(settings.MEDIA_ROOT_FILES_XML_FIRMA, file)
     if not os.path.exists(filepath):
         print('no existe documento')
