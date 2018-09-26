@@ -297,8 +297,8 @@ def generar_txt_comprobantes_electronicos(serie, num, tipo):
                     isNone('', '') + '|' + \
                     isNone('', '') + '|'
 
-        data_det += isNone(d.tvu_item, '') + '|' + \
-                    isNone(d.imp_total_item, '') + '|' + \
+        data_det += isNone(d.imp_total_item, '') + '|' + \
+                    isNone(d.tvu_item, '') + '|' + \
                     isNone('0', '-') + '|'+'\n'
 
     file_aca=nom_archivo + '.ACA'
