@@ -252,7 +252,7 @@ def generar_txt_comprobantes_electronicos(serie, num, tipo):
         isNone(cab.tip_nc_nd, '') + '|' + \
         isNone(cab.motivo_nc_nd, '') + '|' + \
         isNone(cab.tip_doc_modif_nc_nd, '') + '|' + \
-        isNone(cab.cfnumser, '') +'-' +isNone(cab.cfnumdoc, '')+ '|' + \
+        isNone(cab.serie_nc_nd, '') +'-' +isNone(cab.nro_compr_nc_nd, '')+ '|' + \
         isNone(cab.sumatoria_igv            ,'0.0')+'|'+ \
         isNone(cab.tvv_imp_ope_gravadas     ,'0.0')+'|'+ \
         isNone(cab.sumatoria_igv + cab.tvv_imp_ope_gravadas,'0.0')+'|'+ \
