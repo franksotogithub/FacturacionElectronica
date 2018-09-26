@@ -319,7 +319,7 @@ def generar_txt_comprobantes_electronicos(serie, num, tipo):
     genera_txt(file_det, data_det)
     genera_txt(file_tri, data_tri)
     genera_txt(file_ley, data_ley)
-    genera_txt(file_aca, data_aca)
+    #genera_txt(file_aca, data_aca)
 
     return nom_archivo
 
