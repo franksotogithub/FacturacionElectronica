@@ -19,13 +19,19 @@ from django.conf.urls import url, include
 from django.conf.urls.static import static
 from qr_code import urls as qr_code_urls
 from django.conf import settings
+from facturacion.views import IndexView
 
 urlpatterns = [
+    url(r'^$', IndexView.as_view(), name='index'),
     path('admin/', admin.site.urls),
     url(r'^qr_code/', include(qr_code_urls, namespace="qr_code")),
     url(r'^facturacion/', include('facturacion.urls',namespace='facturacion')),
     url(r'^facturacion-api/', include('facturacion.api.urls',namespace='facturacion-api')),
     url(r'^usuarios/', include('usuarios.urls',namespace='usuarios')),
     url(r'^resumenes/', include('resumenes.urls',namespace='resumenes')),
+    url(r'^herramientas_api/', include('herramientas.api.urls',namespace='herramientas_api')),
+    url(r'^herramientas/', include('herramientas.urls',namespace='herramientas')),
+    url(r'^configuracion_api/', include('configuracion.api.urls',namespace='configuracion_api')),
+    url(r'^configuracion/', include('configuracion.urls',namespace='configuracion')),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

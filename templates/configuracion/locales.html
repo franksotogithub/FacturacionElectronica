@@ -1,0 +1,189 @@
+{% extends 'wrapper.html' %}
+{% load  staticfiles %}
+{% block customcss %}
+    <style>
+    table.dataTable thead tr th {
+    word-wrap: break-word;
+    word-break: break-all;
+    }
+    table.dataTable tbody tr td {
+        word-wrap: break-word;
+        word-break: break-all;
+    }
+  #tabla_locales td, #tabla_locales th{
+            white-space: normal;
+        }
+
+    /*.form-group {
+        margin-bottom: 20px;
+        position: relative;
+    }*/
+    </style>
+{% endblock %}
+
+{% block modals-view %}
+
+    <div id="modal_detalle" class="modal fade in">
+         <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h6 class="modal-title text-center">
+                        <div class="titulo_modal">Detalle de Local</div>
+
+                    </h6>
+                </div>
+
+                <div class="modal-body" >
+                        <div class="form-horizontal">
+
+                        <div class="form-group">
+                            <label class="control-label col-lg-3"> Codigo </label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control"   id="codigo">
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-lg-3"> Tipo: </label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control "  id="tipo" >
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-lg-3"> Domicilio: </label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control "  id="domicilio" >
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="control-label col-lg-3"> Codigo Original: </label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control "  id="codigo_original" >
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="modal-footer ">
+                    <button type="button" class="btn btn-primary"  id="guardar"><li class="fa fa-save"> GUARDAR</li> </button>
+                    <button type="button" class="btn btn-warning"  id="eliminar"><li class="fa fa-minus-square"> ELIMINAR</li> </button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><li class="icon-close2">CANCELAR </li> </button>
+
+                </div>
+
+            </div>
+         </div>
+     </div>
+
+
+{% endblock %}
+
+{% block table-view %}
+<div class="panel-body" >
+    <div class="row">
+
+        <div  class="col-xs-12 col-sm-12 col-md-12" style="margin-bottom: 20px">
+            <button type="button" class="btn btn-primary"  id="nuevo">
+            <li class="fa fa-plus-square">NUEVO</li>
+            </button>
+
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <table class="table datatable-basic" id="tabla_locales"><thead class="bg-primary">
+            <tr>
+                <th>CODIGO LOCAL</th>
+                <th>TIPO</th>
+                <th>DOMICILIO</th>
+                <th>CODIGO ORIGINAL</th>
+               <th>id</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            </table>
+        </div>
+
+
+    </div>
+
+
+
+
+
+   </div>
+{% endblock %}
+
+
+{% block requirejs %}
+    <script type="text/javascript">
+        var App = {
+            filerequired: {
+                service: ['ajax', 'configuracion'],
+                utils: ['locales']
+            }
+        };
+    </script>
+{% endblock %}
+
+{% block customjs %}
+<script type="text/javascript">
+
+
+    var cliente='';
+    var fecha='';
+    var tipoAccion='';
+    var tipoAc={ };
+    var id;
+    tipoAc.TIPO_CREAR='CREAR';
+    tipoAc.TIPO_ACTUALIZAR='ACTUALIZAR';
+
+    $(document).ready(function (e) {
+
+        var tablaLocales =$('#tabla_locales');
+
+        $('#tabla_locales tbody').on('click','tr',function (e) {
+            $("#tabla_locales tbody > tr").removeClass("bg-success");
+            $(this).addClass("bg-success");
+
+        });
+        $('#tabla_locales tbody').on('dblclick','tr',function (e) {
+            tipoAccion=tipoAc.TIPO_ACTUALIZAR;
+
+            id=$(this).attr('id');
+            $utils.locales.detalleLocal(tipoAccion,id);
+        });
+
+        $('#nuevo').on('click',function (e) {
+            tipoAccion=tipoAc.TIPO_CREAR;
+            $utils.locales.detalleLocal(tipoAccion);
+
+        });
+
+
+        $('#guardar').on('click',function (e) {
+            var data={};
+
+            data.codigo=$('#codigo').val();
+            data.tipo=$('#tipo').val();
+            data.domicilio=$('#domicilio').val();
+            data.codigo_original=$('#codigo_original').val();
+            $utils.locales.guardar(tipoAccion,data,id);
+
+        });
+
+        $('#eliminar').on('click',function (e) {
+
+            $utils.locales.eliminar(id);
+        });
+
+        $utils.locales.TablaLocales();
+
+    });
+</script>
+{% endblock %}

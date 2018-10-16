@@ -1,23 +1,22 @@
 from django.shortcuts import render
 from datetime import datetime
-#from django.conf import settings
-from datetime import datetime
-from ..models import Usuario , ComprobanteCab , ComprobanteDet ,EstadoDocumento ,ResumenCab ,ResumenDet
-    #FacturaElectronica ,\
-
+from ..models import Usuario , ComprobanteCab , ComprobanteDet ,EstadoDocumento ,\
+    ResumenCab ,ResumenDet
 from rest_framework.viewsets import ViewSet, ModelViewSet
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from .serializers import  UsuarioSerializer , ComprobanteCabSerializer\
-    , ComprobanteDetSerializer , EstadoDocumentoSerializer, ResumenCabSerializer, ResumenDetSerializer
-from ..utils import RenderPdfMixin ,enviar_mail ,volver_generar_resumen
+    , ComprobanteDetSerializer , EstadoDocumentoSerializer\
+    , ResumenCabSerializer, ResumenDetSerializer
+from ..utils import RenderPdfMixin ,enviar_mail ,volver_generar_resumen , \
+    migrar_comprobantes ,migrar_resumenes_comprobantes ,migrar_resumenes_anulados ,\
+    actualizar_estados,exportar_sunat
 from django.views.generic import TemplateView
 from django.db.models import Count, Max, Case, When, Sum , F
 from django.shortcuts import get_object_or_404 ,Http404
 import os
 from django.conf import settings
 from django.http import HttpResponse
-
 
 class UsuarioViewSet(ViewSet):
     def list(self,request):
@@ -311,3 +310,28 @@ class ResumenViewSet(ViewSet):
             return Response({'success':True,'data':doc})
         except:
             return Response({'success':False})
+
+class HerramientasViewSet(ViewSet):
+    @action(methods=['post'], url_path='datos', detail=False)
+    def datos(self,request):
+        tipo = request.data.get('tipo')
+
+        try:
+            if tipo=='comprobantes':
+                migrar_comprobantes()
+            elif tipo=='resumenComprobantes':
+                migrar_resumenes_comprobantes()
+            elif tipo=='resumenAnulados':
+                migrar_resumenes_anulados()
+            elif tipo=='exportarSunat':
+                exportar_sunat()
+            elif tipo=='actualizarEstados':
+                actualizar_estados()
+
+            return Response({'status': True})
+
+        except:
+            return Response({'status': False})
+
+
+

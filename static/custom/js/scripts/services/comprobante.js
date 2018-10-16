@@ -114,3 +114,4 @@ $services.comprobante.generarResumen= function (datax, callbacksuccess) {
 
         }, datax);
 }
+

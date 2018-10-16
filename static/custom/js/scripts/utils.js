@@ -36,7 +36,10 @@ var $utils = {
     },
 
     isoformatToDatetime: function (date_iso) {
+        if (date_iso !==null)
         return moment(date_iso).format("DD/MM/YYYY HH:mm:ss");
+        else
+        return date_iso;
     },
 
     isoformatToDate: function (date_iso) {

@@ -16,14 +16,12 @@ class FacturasView(TemplateView):
         context = self.get_context_data(**kwargs)
         return self.render_to_response(context, status=403)
 
-
 class ConsultarComprobanteView(TemplateView):
     template_name = 'facturacion/consultar_comprobante_cliente.html'
     #@method_decorator(permission)
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         return self.render_to_response(context, status=403)
-
 
 class BoletasView(TemplateView):
     template_name = 'facturacion/boletas.html'

@@ -33,7 +33,15 @@
                 <li><a href="{% url 'usuarios:cerrar-sesion' %}"><i class="icon-switch2"></i> Cerrar Sesion</a></li>
             </ul>
 
+            {% else %}
+               <!-- <ul class="dropdown-menu dropdown-menu-right">-->
+                <li><a href="{% url 'usuarios:login' %}"><i class="icon-user-plus"></i> Login</a></li>
+                <!--</ul>-->
+
             {% endif %}
+
+
+
         </li>
 
     </ul>

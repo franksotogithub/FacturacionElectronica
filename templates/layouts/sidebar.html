@@ -10,18 +10,22 @@
 
 								<!-- Main -->
 								<li class="navigation-header"><span>Main</span> <i class="icon-menu" title="Main pages"></i></li>
-								<li><a href="index.html"><i class="icon-home4"></i> <span>Dashboard</span></a></li>
-								{% recursetree menu_page.website %}
-                                <li><a href="index.html"><i class="{{ node.icono }}"></i> <span>{{ node.descripcion }}</span></a>
-                                    <ul>
-                                          {% if not node.is_leaf_node %}
+								<!--<li><a href="index.html"><i class="icon-home4"></i> <span>Dashboard</span></a></li>-->
+
+
+                                {% recursetree menu_page.website %}
+                                    <li><a href="/{{ node.slug }}"><i class="{{ node.icono }}"></i> <span>{{ node.descripcion }}</span></a>
+                                    {% if not node.is_leaf_node %}
+                                        <ul>
+
                                             {% for hijo,structure in menu_page.website|tree_info:"ancestors" %}
                                                  {% if hijo.is_child_node and structure.ancestors|tree_path == node.descripcion %}
                                                      <li><a  href="/{{ node.slug }}/{{ hijo.slug }}/">{{ hijo }}</a></li>
                                                  {% endif %}
                                              {% endfor %}
-                                          {% endif %}
-                                    </ul>
+
+                                        </ul>
+                                    {% endif %}
                                 {% endrecursetree %}
 								</li>
                             </ul>

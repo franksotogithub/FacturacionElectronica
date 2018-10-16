@@ -1,0 +1,158 @@
+{% extends 'wrapper.html' %}
+{% load  staticfiles %}
+{% block customcss %}
+    <style>
+    /*.dataTables_wrapper .datatable-header {
+            display: none;
+        }*/
+
+    button {
+        padding: 10px;
+        width: 80%;
+        margin: 10px;
+    }
+
+    </style>
+{% endblock %}
+
+
+{% block table-view %}
+
+
+    <!--
+<div class="panel-body" id="table-view">
+       <div class="row">
+
+<!--
+            <div class="col-md-6">
+                <button type="button" class="btn bg-primary"  id="insertar_datos">
+                    <li class="icon-database-insert" style="font-size: 50px"> </li>
+                    <span>MIGRAR ADESY-SIERRP(COMPROBANTES)</span>
+                </button>
+
+            </div>
+
+
+            <div class="col-md-6">
+
+                <button type="button" class="btn bg-green"  id="insertar_resumenes">
+                    <li class="icon-database-upload" style="font-size: 50px"> </li>
+                    <span>MIGRAR ADESY-SIERRP(RESUMENES)</span>
+                </button>
+
+
+            </div>
+            <div class="col-md-6">
+                <button type="button" class="btn bg-orange"  id="insertar_anulaciones">
+                    <li class="icon-database-upload" style="font-size: 50px"> </li>
+                    <span>MIGRAR ADESY-SIERRP(ANULACIONES)</span>
+                </button>
+
+            </div>
+
+             <div class="col-md-6">
+                <button type="button" class="btn bg-indigo"  id="exportar_sunat">
+                    <li class="icon-database-export" style="font-size: 50px"> </li>
+                    <span>MIGRAR SIERRP-SUNAT</span>
+                </button>
+
+            </div>
+
+
+            <div class="col-md-6">
+                <button type="button" class="btn bg-teal"  id="actualizar_estados">
+                    <li class="icon-database-refresh" style="font-size: 50px"> </li>
+                    <span>ACTUALIZAR-ESTADOS</span>
+                </button>
+
+            </div>
+
+
+       </div>
+   </div>
+-->
+<div class="panel-body" >
+    <div class="row">
+
+
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <table class="table datatable-basic" id="tabla_procesos"><thead class="bg-primary">
+            <tr>
+                <th></th>
+                <th>DESCRIPCION PROCESO</th>
+                <th>INICIO DE PROCESO</th>
+                <th>FIN DE PROCESO</th>
+                <th>ESTADO</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            </table>
+        </div>
+
+        <div  class="col-xs-3 col-sm-3 col-md-3" style="margin-bottom: 20px">
+            <button type="button" class="btn btn-primary"  id="procesar">
+            <li class="fa fa-load">PROCESAR</li>
+            </button>
+        </div>
+
+    </div>
+
+   </div>
+
+{% endblock %}
+
+
+{% block requirejs %}
+    <script type="text/javascript">
+        var App = {
+            filerequired: {
+                service: ['ajax', 'herramientas'],
+                utils: ['herramientas_datos']
+            }
+        };
+    </script>
+{% endblock %}
+
+{% block customjs %}
+<script type="text/javascript">
+
+
+    $(document).ready(function (e) {
+
+
+        /*$('button').on('click',function(){
+            var id=$(this).attr("id");
+
+            $utils.herramientas_datos.ejecutar(id);
+
+        });*/
+
+
+
+        $('#procesar').on('click',function () {
+            var procesos=[];
+
+          $("#tabla_procesos tbody input").each(function (i,v) {
+                if ($(v).is(':checked')) {
+                    var id = parseInt($(v).attr('id'));
+                    procesos.push(id);
+                }
+            });
+            console.log('procesos>>>',procesos);
+            $utils.herramientas_datos.ejecutarProcesos(procesos);
+
+
+        });
+
+        $utils.herramientas_datos.listarProcesos();
+
+        setInterval(function() {
+            $utils.herramientas_datos.listarProcesos();
+        }, 10000);
+
+
+    });
+</script>
+{% endblock %}

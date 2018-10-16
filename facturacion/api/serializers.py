@@ -207,8 +207,10 @@ class ResumenCabSerializer(serializers.ModelSerializer):
         return obj.get_tipo_resumen_display()
 
 class ResumenDetSerializer(serializers.ModelSerializer):
-    #nro_reg = serializers.SerializerMethodField('get_nro_reg')
 
     class Meta:
         model= ResumenDet
         fields = '__all__'
+
+
+

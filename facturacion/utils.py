@@ -11,7 +11,11 @@ from django.conf import settings
 from django.template.loader import get_template
 from django.template import Context
 from django.http import HttpResponse
-from .models import ComprobanteCab , ComprobanteDet ,ComprobanteBaja , Catalogo05TiposTributos ,Catalogo15ElementosAdicionales , ResumenDet, ResumenCab ,EstadoDocumento
+from .models import ComprobanteCab , ComprobanteDet ,ComprobanteBaja , Catalogo05TiposTributos ,\
+    Catalogo15ElementosAdicionales , ResumenDet, ResumenCab ,EstadoDocumento
+
+from herramientas.models import Proceso
+
 from facturacion.api.serializers import ComprobanteCabSerializer , ComprobanteDetSerializer
 
 from PIL import Image, ImageDraw, ImageFont
@@ -26,10 +30,10 @@ from django.db.models import F, Sum,Min,Q,Max
 from sunat.models import Documento
 from num2words.currency import parse_currency_parts, prefix_currency
 from num2words import num2words
+from django.db import connection
+
 
 ruc = settings.RUC
-
-
 
 
 NAMESPACES={
@@ -357,20 +361,7 @@ def generar_txt_resumenes_anulaciones():
     res.save()
 
 def generar_txt_resumenes(tipo_resumen):
-    #resumen_detalle= ResumenDet.objects.filter(tipo_resumen=tipo_resumen, numdoc_resumen__isnull=True)[:200]
-    #list_ids=resumen_detalle.values_list('pk', flat=True)
-    #serie="{:%Y%m%d}".format(datetime.now().date())
-    #cab = ResumenCab.objects.filter(tipo_resumen=tipo_resumen,numser_resumen=serie).aggregate(max_res_fen=Max('numdoc_resumen'))
-    #cant_res_gen=int(cab['max_res_fen'])
-    #num_doc_resumen=str(cant_res_gen+1).zfill(3)
-    #r=resumen_detalle[0]
-#
-    #with transaction.atomic():
-    #    res = ResumenCab(ruc_emisor=r.ruc_emisor, tipo_resumen=r.tipo_resumen, fecha_gen=datetime.now().date(),
-    #                     estado_resumen_id=ComprobanteCab.POR_GENERAR_DOCUMENTO, numdoc_resumen=num_doc_resumen,numser_resumen=serie,nro_reg=resumen_detalle.count())
-#
-    #    res.save()
-    #    ResumenDet.objects.filter(pk__in=list(list_ids)).update(resumen_cab=res,numdoc_resumen=num_doc_resumen,numser_resumen=serie)
+
     resumenes=ResumenCab.objects.filter(tipo_resumen=tipo_resumen, estado_resumen_id=ComprobanteCab.POR_GENERAR_DOCUMENTO)
 
     for res in resumenes:
@@ -385,41 +376,6 @@ def generar_txt_resumenes(tipo_resumen):
 
 
 
-    #
-    #file=res.ruc_emisor + '-' + res.tipo_resumen + '-' + res.numser_resumen+'-'+res.numdoc_resumen + '.RDI'
-    #det=''
-#
-    #for r in resumen_detalle:
-    #    det +=isNone("{:%Y-%m-%d}".format(r.fecdoc_item),'') + '|'
-    #    det += isNone("{:%Y-%m-%d}".format(res.fecha_gen), '') + '|'
-    #    det += isNone(r.tipodoc_item, '') + '|'
-    #    det += isNone(r.numserie_item+'-'+r.numdoc_item, '') + '|'
-    #    det += isNone(r.tipdoc_receptor, '0') + '|'
-    #    det += isNone(r.nrodoc_receptor, '-') + '|'
-    #    det += isNone(r.moneda, '') + '|'
-    #    det += isNone(r.tvv_imp_ope_gravadas, '0.0') + '|'
-    #    det += isNone(r.tvv_imp_ope_exoneradas, '0.0') + '|'
-    #    det += isNone(r.tvv_imp_ope_inafectas, '0.0') + '|'
-    #    det += isNone(r.tvv_imp_ope_gratuitas, '0.0') + '|'
-    #    det += isNone(r.imp_total_sum_otros_cargos, '0.0') + '|'
-    #    det += isNone(r.monto_isc, '0.0') + '|'
-    #    det += isNone(r.monto_igv, '0.0') + '|'
-    #    det += isNone(r.monto_otros_trib, '0.0') + '|'
-    #    det += isNone(r.importe_total_venta, '0.0') + '|'
-    #    det += isNone(r.tipodoc_modif, '') + '|'
-    #    det += isNone(r.numserie_modif, '') + '|'
-    #    det += isNone(r.numdoc_modif, '') + '|'
-    #    det += isNone(r.regimen_percepcion, '') + '|'
-    #    det += isNone(r.porcent_percepcion, '') + '|'
-    #    det += isNone(r.base_imponible_percepcion, '') + '|'
-    #    det += isNone(r.monto_percepcion, '') + '|'
-    #    det += isNone(r.monto_percepcion, '') + '|'
-    #    det += isNone(r.estado, '1') + '|'+'\n'
-#
-    #genera_txt(file,det)
-    #res.nom_archivo=res.ruc_emisor + '-' + res.tipo_resumen + '-' + res.numser_resumen+'-'+res.numdoc_resumen
-    #res.estado_resumen_id=ComprobanteCab.DOCUMENTO_GENERADO
-    #res.save()
 
 def generar_resumen(serie,num_doc,tipo_resumen):
     res = ResumenCab.objects.get(tipo_resumen=tipo_resumen, numdoc_resumen=num_doc,
@@ -567,12 +523,147 @@ def actualizar_leyendas(monto,moneda,separador):
         return  ''
 
 
+URL_SUNAT='http://localhost:9000'
+URL_REQUEST_GENERAR_PDF=URL_SUNAT+'/api/MostrarXml.htm'
+HEADERS = {'content-type': 'application/json'}
+def actualizar_estado_comprobantes():
+    comprobantes=ComprobanteCab.objects.filter(nom_archivo__isnull=False)
+    for com in comprobantes:
+            nom_arch =com.nom_archivo #.ruc_emisor+'-'+com.tipodoc_comprobante_id+'-'+com.cfnumser+'-'+com.cfnumdoc
+
+        #try:
+            print(nom_arch)
+            doc_sunat = Documento.objects.get(nom_arch=nom_arch)
+
+            com.estado_comprobante_id=doc_sunat.ind_situ
+            print(doc_sunat.ind_situ)
+            com.save()
+        #except:
+        #    continue
+
+def actualizar_estado_resumenes():
+    resumenes=ResumenCab.objects.filter(nom_archivo__isnull=False)
+    for res in resumenes:
+        nom_arch=res.nom_archivo
+        #nom_arch =res.ruc_emisor+'-'+res.tipodoc_comprobante_id+'-'+res.cfnumser+'-'+res.cfnumdoc
+        #try:
+        doc_sunat = Documento.objects.get(nom_arch=nom_arch)
+        res.estado_resumen_id=doc_sunat.ind_situ
+        res.save()
+        ComprobanteCab.objects.filter(cod_resumen=res.id).update(estado_comprobante=doc_sunat.ind_situ)
+        #except:
+        #    continue
+
+
+TEMPLATES={
+    '01':'pdf/factura.html',
+    '03':'pdf/boleta.html',
+    '07':'pdf/boleta.html',
+}
 
 
 
 
+def generar_pdf():
+    #comprobantes = ComprobanteCab.objects.filter(estado_comprobante__id=ComprobanteCab.DOCUMENTO_APROBADO,estado_pdf=ComprobanteCab.POR_GENERAR_PDF,tipodoc_comprobante__in=('01','07','08')).order_by('cffecdoc')
 
-#
+    comprobantes = ComprobanteCab.objects.filter(
+        Q(tipodoc_comprobante__codigo='01') | (Q(tipodoc_comprobante__codigo='07') & Q(tip_nc_nd='01')),
+        estado_comprobante=ComprobanteCab.DOCUMENTO_APROBADO).order_by('-cffecdoc')
+    for com in comprobantes:
+            nom_arch = com.nom_archivo
+        #try:
+            xml_envio=nom_arch+'.xml'
+            codigo=leer_xml_envio(xml_envio)
+            datos={}
+
+
+            datos['cfnumser'] = com.cfnumser
+            datos['cfnumdoc'] = com.cfnumdoc
+            datos['tipodoc_comprobante'] = com.tipodoc_comprobante_id
+            datos['codigo'] = codigo
+
+            #print('datas>>',datos)
+            genera_pdf_facturas_electronicas(datos, TEMPLATES[com.tipodoc_comprobante_id])
+            com.estado_pdf=ComprobanteCab.GENERARO_PDF
+            com.save()
+
+
+def crear_txt_comprobantes():
+    # comprobantes = ComprobanteCab.objects.filter(estado_comprobante=ComprobanteCab.POR_GENERAR_DOCUMENTO,tipodoc_comprobante__codigo__in=('01','07','08') ).order_by('-cffecdoc')
+    comprobantes = ComprobanteCab.objects.filter(
+        Q(tipodoc_comprobante__codigo='01') | (Q(tipodoc_comprobante__codigo='07') & Q(tip_nc_nd='01')),
+        estado_comprobante=ComprobanteCab.POR_GENERAR_DOCUMENTO).order_by('-cffecdoc')
+
+
+    for com in comprobantes:
+        # try:
+
+        nom_archivo = generar_txt_comprobantes_electronicos(com.cfnumser, com.cfnumdoc, com.tipodoc_comprobante_id)
+        com.nom_archivo = nom_archivo
+        com.estado_comprobante_id = ComprobanteCab.DOCUMENTO_GENERADO
+        com.save()
+        print('comprobantes>>>', nom_archivo)
+        try:
+            doc_sunat = Documento.objects.get(nom_arch=nom_archivo)
+            doc_sunat.ind_situ = ComprobanteCab.DOCUMENTO_GENERADO
+            doc_sunat.save()
+
+        except:
+            continue
+
+def actualizar_estado_tarea(id,estado):
+    proceso = Proceso.objects.get(pk=id)
+    proceso.estado = estado
+
+    if proceso.estado == 'PROCESANDO':
+        proceso.fecha_ini = datetime.now()
+    else:
+        proceso.fecha_fin = datetime.now()
+    proceso.save()
+
+
+def migrar_comprobantes():
+    sql_result = 'EXEC migrar_comprobantes'
+    cursor = connection.cursor()
+    cursor.execute(sql_result)
+    connection.commit()
+    connection.close()
+#crear_txt_comprobantes()
+
+def migrar_resumenes_comprobantes():
+
+    sql_result = 'EXEC migrar_resumenes_comprobantes'
+    cursor = connection.cursor()
+    cursor.execute(sql_result)
+    connection.commit()
+    connection.close()
+
+    #generar_txt_resumenes(ResumenCab.RESUMEN_COMPROBANTE)
+
+def migrar_resumenes_anulados():
+    sql_result = 'EXEC migrar_resumenes_anulados'
+    cursor = connection.cursor()
+    cursor.execute(sql_result)
+    connection.commit()
+    connection.close()
+    #generar_txt_resumenes(ResumenCab.RESUMEN_ANULACION)
+
+def exportar_sunat():
+    crear_txt_comprobantes()
+    generar_txt_resumenes(ResumenCab.RESUMEN_COMPROBANTE)
+    generar_txt_resumenes(ResumenCab.RESUMEN_ANULACION)
+
+def actualizar_estados():
+    actualizar_estado_comprobantes()
+    actualizar_estado_resumenes()
+    generar_pdf()
+    #unzip_rpta_xml()
+
+#def actualizar_configuracion():
+
+
+
 
 
 

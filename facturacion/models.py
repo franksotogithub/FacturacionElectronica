@@ -2,8 +2,6 @@ from django.db import models
 
 # Create your models here.
 
-
-
 class Catalogo01TipoDocumento(models.Model):
     codigo = models.CharField(db_column='Codigo', max_length=2, primary_key=True)  # Field name made lowercase.
     descripcion = models.CharField(db_column='Descripcion', max_length=200, blank=True, null=True)  # Field name made lowercase.
@@ -246,7 +244,6 @@ class Catalogo05TiposTributos(models.Model):
     name = models.CharField(db_column='Name', max_length=6, blank=True, null=True)  # Field name made lowercase.
     descripcion = models.CharField(db_column='Descripcion', max_length=200, blank=True, null=True)  # Field name made lowercase.
     un_ece_5153 = models.CharField(db_column='UN_ECE_5153', max_length=3, blank=True, null=True)  # Field name made lowercase.
-
     class Meta:
         managed = False
         db_table = 'CATALOGO_05_TIPOS_TRIBUTOS'
@@ -304,8 +301,6 @@ class ResumenDet(models.Model):
         ('2','MODIFICAR'),
         ('3','ANULADO'),
     )
-
-
     tipodoc_item = models.ForeignKey(Catalogo01TipoDocumento,db_constraint=False,db_column='TIPODOC_ITEM',  max_length=2, blank=True, null=True,on_delete=models.DO_NOTHING)  # Field name made lowercase.
     fecdoc_item =models.DateTimeField(db_column='FECDOC_ITEM',  blank=True, null=True)  # Field name made lowercase.
     numserie_item = models.CharField(db_column='NUMSERIE_ITEM', max_length=4, blank=True, null=True)  # Field name made lowercase.
@@ -363,8 +358,6 @@ class ResumenDet(models.Model):
                                          null=True)  # Field name made lowercase.
     tip_doc_emisor = models.CharField(db_column='TIP_DOC_EMISOR', max_length=1, blank=True,
                                       null=True)  # Field name made lowercase.
-
-
 
     class Meta:
         managed = True
