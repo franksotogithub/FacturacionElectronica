@@ -16,7 +16,6 @@ $utils.facturas.crearTablaComprobantes=function(tabla,fechaIni,fechaFin,estado){
                     {data: 'cfnombre' ,'searchable':true},
                     {data: 'estado_comprobante' ,'searchable':true},
 
-
         ];
         var slug = 'facturacion-api/comprobantes/listar';
         var serie=$('#serie').val();
@@ -136,7 +135,7 @@ $utils.facturas.crearDetalleComprobante = function (cell, tabla) {
         $('#cfnombre').val(data.cabecera.cfnombre);
         $('#moneda').val(data.cabecera.moneda);
 
-        $('#tvv_cod_ope_exoneradas').val(data.cabecera.tvv_cod_ope_exoneradas);
+        $('#tvv_cod_ope_exoneradas').val(data.cabecera.tvv_imp_ope_exoneradas);
         $('#total').val(data.cabecera.tvv_imp_ope_gravadas);
         $('#tvv_imp_ope_gravadas').val(data.cabecera.tvv_imp_ope_gravadas);
         $('#tvv_imp_ope_inafectas').val(data.cabecera.tvv_imp_ope_inafectas);

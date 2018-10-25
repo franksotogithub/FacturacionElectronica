@@ -136,7 +136,7 @@ $utils.notas_credito.crearDetalleComprobante = function (cell, tabla) {
         $('#cfnombre').val(data.cabecera.cfnombre);
         $('#moneda').val(data.cabecera.moneda);
 
-        $('#tvv_cod_ope_exoneradas').val(data.cabecera.tvv_cod_ope_exoneradas);
+        $('#tvv_cod_ope_exoneradas').val(data.cabecera.tvv_imp_ope_exoneradas);
         $('#total').val(data.cabecera.tvv_imp_ope_gravadas);
         $('#tvv_imp_ope_gravadas').val(data.cabecera.tvv_imp_ope_gravadas);
         $('#tvv_imp_ope_inafectas').val(data.cabecera.tvv_imp_ope_inafectas);

@@ -56,8 +56,10 @@ class DescargarViewSet(ViewSet):
         #path = '{}-{}-{}-{}.zip'.format(cab.ruc_emisor, tipo, serie, num)
         #path = 'R-{}.zip'.format(nom_archivo)
         if nom_archivo is not None:
-            path = 'R-{}.xml'.format(nom_archivo)
-            file_path = os.path.join(settings.MEDIA_ROOT_FILES_XML_RPTA, path)
+            #path = 'R-{}.xml'.format(nom_archivo)
+            #file_path = os.path.join(settings.MEDIA_ROOT_FILES_XML_RPTA, path)
+            path = '{}.xml'.format(nom_archivo)
+            file_path = os.path.join(settings.MEDIA_ROOT_FILES_XML_FIRMA, path)
             if os.path.exists(file_path):
                 with open(file_path, 'rb') as fh:
                     #response = HttpResponse(fh.read(), content_type="application/zip")
