@@ -5,7 +5,7 @@ $utils.boletas.cfnumser=undefined
 $utils.boletas.cfnumdoc=undefined
 $utils.boletas.tipodoc=undefined
 $utils.boletas.nomArchivo='';
-$utils.boletas.TIPOCOMPROBANTE='07';
+$utils.boletas.TIPOCOMPROBANTE='03';
 
 
 $utils.boletas.crearTablaComprobantes=function(tabla,fechaIni,fechaFin,estado){

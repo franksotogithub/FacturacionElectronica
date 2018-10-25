@@ -35,7 +35,6 @@ from django.db import connection
 
 ruc = settings.RUC
 
-
 NAMESPACES={
     'schemaLocation':r'urn:oasis:names:specification:ubl:schema:xsd:Invoice-2',
     'ar' :'urn:oasis:names:specification:ubl:schema:xsd:ApplicationResponse-2',
