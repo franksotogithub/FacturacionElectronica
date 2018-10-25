@@ -18,9 +18,8 @@ def generar_tareas_task(ids):
             exportar_sunat()
         elif id == 5:
             actualizar_estados()
-        else:
-            continue
-            #actualizar_estado_tarea(id, 'TERMINADO')
+
+        actualizar_estado_tarea(id, 'TERMINADO')
         #except:
             #actualizar_estado_tarea(id, 'ERROR')
 

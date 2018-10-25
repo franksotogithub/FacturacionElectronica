@@ -117,7 +117,7 @@ def genera_pdf_facturas_electronicas(datos,template_name):
     serie=datos['cfnumser']
     num = datos['cfnumdoc']
     tipo = datos['tipodoc_comprobante']
-    codigo=datos['codigo']
+    #codigo=datos['codigo']
 
 
     cab = ComprobanteCab.objects.get(cfnumser=serie, cfnumdoc=num, tipodoc_comprobante=tipo)
@@ -574,14 +574,13 @@ def generar_pdf():
             nom_arch = com.nom_archivo
         #try:
             xml_envio=nom_arch+'.xml'
-            codigo=leer_xml_envio(xml_envio)
+            #codigo=leer_xml_envio(xml_envio)
             datos={}
-
 
             datos['cfnumser'] = com.cfnumser
             datos['cfnumdoc'] = com.cfnumdoc
             datos['tipodoc_comprobante'] = com.tipodoc_comprobante_id
-            datos['codigo'] = codigo
+            #datos['codigo'] = codigo
 
             #print('datas>>',datos)
             genera_pdf_facturas_electronicas(datos, TEMPLATES[com.tipodoc_comprobante_id])
