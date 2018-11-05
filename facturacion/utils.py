@@ -553,17 +553,17 @@ def actualizar_estado_resumenes():
     for res in resumenes:
         nom_arch=res.nom_archivo
         #nom_arch =res.ruc_emisor+'-'+res.tipodoc_comprobante_id+'-'+res.cfnumser+'-'+res.cfnumdoc
-        #try:
-        doc_sunat = Documento.objects.get(nom_arch=nom_arch)
-        res.estado_resumen_id=doc_sunat.ind_situ
-        res.save()
+        try:
+            doc_sunat = Documento.objects.get(nom_arch=nom_arch)
+            res.estado_resumen_id=doc_sunat.ind_situ
+            res.save()
 
-        comp=ComprobanteCab.objects.filter(cod_resumen=res.id)
+            comp=ComprobanteCab.objects.filter(cod_resumen=res.id)
 
-        comp.update(estado_comprobante=doc_sunat.ind_situ)
-        print('cantidad de comprobantes>>>',comp.count())
-        #except:
-        #    continue
+            comp.update(estado_comprobante=doc_sunat.ind_situ)
+            print('cantidad de comprobantes>>>',comp.count())
+        except:
+            continue
 
 
 TEMPLATES={
