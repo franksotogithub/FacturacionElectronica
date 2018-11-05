@@ -7,3 +7,4 @@ db.sqlite3
 static/assets/
 db.sqlite3
 apps/
+media/

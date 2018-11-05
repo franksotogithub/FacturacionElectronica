@@ -396,7 +396,7 @@ def generar_resumen(serie,num_doc,tipo_resumen):
         det = ''
         for r in resumen_detalle:
             det += isNone("{:%Y-%m-%d}".format(r.fecdoc_item), '') + '|'
-            det += isNone("{:%Y-%m-%d}".format(res.fecha_gen), '') + '|'
+            det += isNone("{:%Y-%m-%d}".format(r.fecdoc_item), '') + '|'
             det += isNone(r.tipodoc_item_id, '') + '|'
             det += isNone(r.numserie_item + '-' + r.numdoc_item, '') + '|'
             det += isNone(r.tipdoc_receptor, '0') + '|'
