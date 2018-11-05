@@ -366,14 +366,14 @@ def generar_txt_resumenes(tipo_resumen):
     for res in resumenes:
         resultado   = generar_resumen(res.numser_resumen,res.numdoc_resumen,tipo_resumen)
         nom_archivo = resultado['nom_archivo']
-        #try:
-        doc_sunat = Documento.objects.get(nom_arch=nom_archivo)
-        doc_sunat.ind_situ = ComprobanteCab.DOCUMENTO_GENERADO
+        try:
+            doc_sunat = Documento.objects.get(nom_arch=nom_archivo)
+            doc_sunat.ind_situ = ComprobanteCab.DOCUMENTO_GENERADO
         #if tipo_resumen==ResumenCab.RESUMEN_COMPROBANTE:
         #    ComprobanteCab.objects.filter(cod_resumen=res.id).update(nom_archivo='{}-{}-{}-{}'.format(F('ruc_emisor'),F('tipodoc_comprobante'),F('cfnumser'),F('cfnumdoc')) )
-        doc_sunat.save()
-        #except:
-            #continue
+            doc_sunat.save()
+        except:
+            continue
 
 
 
