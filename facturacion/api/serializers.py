@@ -55,7 +55,9 @@ class ComprobanteCabSerializer(serializers.ModelSerializer):
     raz_social_emisor = serializers.CharField( max_length=100)  # Field name made lowercase.
     nom_comercial_emisor = serializers.CharField( max_length=100)
     cffecdoc = serializers.DateTimeField(format="%Y-%m-%d", read_only=True)
-    estado_comprobante = serializers.CharField(max_length=100, read_only=True)  # Field name made lowercase.
+    #estado_comprobante = serializers.CharField(max_length=100, read_only=True)  # Field name made lowercase.
+    estado_comprobante = EstadoDocumentoSerializer(many=False, read_only=True)
+
 #    estado_comprobante = serializers.RelatedField(source='nombre', read_only=True)  # Field name made lowercase.
     class Meta:
         model = ComprobanteCab

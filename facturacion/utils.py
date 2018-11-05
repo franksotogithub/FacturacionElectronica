@@ -27,6 +27,7 @@ import lxml.etree as  etree
 import pyqrcode
 from django.db import IntegrityError, transaction
 from django.db.models import F, Sum,Min,Q,Max
+from django.db.models.functions import Concat
 from sunat.models import Documento
 from num2words.currency import parse_currency_parts, prefix_currency
 from num2words import num2words
@@ -362,16 +363,17 @@ def generar_txt_resumenes_anulaciones():
 def generar_txt_resumenes(tipo_resumen):
 
     resumenes=ResumenCab.objects.filter(tipo_resumen=tipo_resumen, estado_resumen_id=ComprobanteCab.POR_GENERAR_DOCUMENTO)
-
     for res in resumenes:
         resultado   = generar_resumen(res.numser_resumen,res.numdoc_resumen,tipo_resumen)
         nom_archivo = resultado['nom_archivo']
-        try:
-            doc_sunat = Documento.objects.get(nom_arch=nom_archivo)
-            doc_sunat.ind_situ = ComprobanteCab.DOCUMENTO_GENERADO
-            doc_sunat.save()
-        except:
-            continue
+        #try:
+        doc_sunat = Documento.objects.get(nom_arch=nom_archivo)
+        doc_sunat.ind_situ = ComprobanteCab.DOCUMENTO_GENERADO
+        #if tipo_resumen==ResumenCab.RESUMEN_COMPROBANTE:
+        #    ComprobanteCab.objects.filter(cod_resumen=res.id).update(nom_archivo='{}-{}-{}-{}'.format(F('ruc_emisor'),F('tipodoc_comprobante'),F('cfnumser'),F('cfnumdoc')) )
+        doc_sunat.save()
+        #except:
+            #continue
 
 
 
@@ -382,6 +384,9 @@ def generar_resumen(serie,num_doc,tipo_resumen):
     resumen_detalle = ResumenDet.objects.filter(tipo_resumen=tipo_resumen, numdoc_resumen=num_doc,
                                            numser_resumen=serie)
 
+    #ComprobanteCab.objects.filter(cod_resumen=res.id).update(
+    #    nom_archivo='{}-{}-{}-{}'.format(F('ruc_emisor'), F('tipodoc_comprobante'), F('cfnumser'), F('cfnumdoc')))
+    #print('cantidad de comprobantes>>>', ComprobanteCab.objects.filter(cod_resumen=res.id).count())
 
 
 
@@ -448,9 +453,12 @@ def volver_generar_resumen(serie,num_doc,tipo_resumen):
     cant_res_gen=int(cab['max_res_fen'])
     nuevo_num_doc_resumen=str(cant_res_gen+1).zfill(3)
     nuevo_serie = "{:%Y%m%d}".format(datetime.now().date())
-    resumenCab.update(numdoc_resumen=nuevo_num_doc_resumen,estado_resumen_id=ComprobanteCab.DOCUMENTO_GENERADO,numser_resumen=nuevo_serie,fecha_gen=datetime.now().date())
-    resumenDet.update(numdoc_resumen=nuevo_num_doc_resumen,numser_resumen=nuevo_serie)
-    return generar_resumen(nuevo_serie, nuevo_num_doc_resumen, tipo_resumen)
+    resumenCab.update(numdoc_resumen=nuevo_num_doc_resumen,estado_resumen_id=ComprobanteCab.DOCUMENTO_GENERADO,fecha_gen=datetime.now().date())
+    resumenDet.update(numdoc_resumen=nuevo_num_doc_resumen)
+    #resumenCab.update(numdoc_resumen=nuevo_num_doc_resumen,estado_resumen_id=ComprobanteCab.DOCUMENTO_GENERADO,numser_resumen=nuevo_serie,fecha_gen=datetime.now().date())
+    #resumenDet.update(numdoc_resumen=nuevo_num_doc_resumen,numser_resumen=nuevo_serie)
+    #return generar_resumen(nuevo_serie, nuevo_num_doc_resumen, tipo_resumen)
+    return generar_resumen(serie, nuevo_num_doc_resumen, tipo_resumen)
 
 def actualizar_comprobantes_detalle_resumen(serie,num_doc,tipo_resumen,estado):
 
@@ -460,6 +468,8 @@ def actualizar_comprobantes_detalle_resumen(serie,num_doc,tipo_resumen,estado):
 
     for r in resumenDet:
         ComprobanteCab.objects.filter(cfnumser=r.numserie_item,cfnumdoc=r.numdoc_item,tipodoc_comprobante=r.tipodoc_item).update(estado_comprobante_id=estado)
+
+
 
 def leer_xml_respuesta(file):
 
@@ -528,20 +538,18 @@ HEADERS = {'content-type': 'application/json'}
 def actualizar_estado_comprobantes():
     comprobantes=ComprobanteCab.objects.filter(nom_archivo__isnull=False)
     for com in comprobantes:
-            nom_arch =com.nom_archivo #.ruc_emisor+'-'+com.tipodoc_comprobante_id+'-'+com.cfnumser+'-'+com.cfnumdoc
+        nom_arch =com.nom_archivo #.ruc_emisor+'-'+com.tipodoc_comprobante_id+'-'+com.cfnumser+'-'+com.cfnumdoc
 
-        #try:
-            print(nom_arch)
+        try:
             doc_sunat = Documento.objects.get(nom_arch=nom_arch)
-
             com.estado_comprobante_id=doc_sunat.ind_situ
-            print(doc_sunat.ind_situ)
             com.save()
-        #except:
-        #    continue
+        except:
+            continue
 
 def actualizar_estado_resumenes():
     resumenes=ResumenCab.objects.filter(nom_archivo__isnull=False)
+    print(resumenes)
     for res in resumenes:
         nom_arch=res.nom_archivo
         #nom_arch =res.ruc_emisor+'-'+res.tipodoc_comprobante_id+'-'+res.cfnumser+'-'+res.cfnumdoc
@@ -549,7 +557,11 @@ def actualizar_estado_resumenes():
         doc_sunat = Documento.objects.get(nom_arch=nom_arch)
         res.estado_resumen_id=doc_sunat.ind_situ
         res.save()
-        ComprobanteCab.objects.filter(cod_resumen=res.id).update(estado_comprobante=doc_sunat.ind_situ)
+
+        comp=ComprobanteCab.objects.filter(cod_resumen=res.id)
+
+        comp.update(estado_comprobante=doc_sunat.ind_situ)
+        print('cantidad de comprobantes>>>',comp.count())
         #except:
         #    continue
 
@@ -557,9 +569,8 @@ def actualizar_estado_resumenes():
 TEMPLATES={
     '01':'pdf/factura.html',
     '03':'pdf/boleta.html',
-    '07':'pdf/boleta.html',
+    '07':'pdf/nota_credito.html',
 }
-
 
 
 
@@ -567,15 +578,15 @@ def generar_pdf():
     #comprobantes = ComprobanteCab.objects.filter(estado_comprobante__id=ComprobanteCab.DOCUMENTO_APROBADO,estado_pdf=ComprobanteCab.POR_GENERAR_PDF,tipodoc_comprobante__in=('01','07','08')).order_by('cffecdoc')
 
     comprobantes = ComprobanteCab.objects.filter(
-        Q(tipodoc_comprobante__codigo='01') | (Q(tipodoc_comprobante__codigo='07') & Q(tip_nc_nd='01')),
+        Q(tipodoc_comprobante__codigo='01') | (Q(tipodoc_comprobante__codigo='07')  ) |Q(tipodoc_comprobante__codigo='03') ,
         estado_comprobante=ComprobanteCab.DOCUMENTO_APROBADO).order_by('-cffecdoc')
     for com in comprobantes:
-            nom_arch = com.nom_archivo
+            #nom_arch = com.nom_archivo
+            nom_arch = com.ruc_emisor+'-'+com.tipodoc_comprobante_id+'-'+com.cfnumser+'-'+com.cfnumdoc
         #try:
             xml_envio=nom_arch+'.xml'
             #codigo=leer_xml_envio(xml_envio)
             datos={}
-
             datos['cfnumser'] = com.cfnumser
             datos['cfnumdoc'] = com.cfnumdoc
             datos['tipodoc_comprobante'] = com.tipodoc_comprobante_id
@@ -651,6 +662,7 @@ def exportar_sunat():
     crear_txt_comprobantes()
     generar_txt_resumenes(ResumenCab.RESUMEN_COMPROBANTE)
     generar_txt_resumenes(ResumenCab.RESUMEN_ANULACION)
+
 
 def actualizar_estados():
     actualizar_estado_comprobantes()

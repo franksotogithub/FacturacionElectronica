@@ -191,7 +191,7 @@ class ComprobanteViewSet(ViewSet):
             if importe_total_venta!='' and importe_total_venta is not None:
                 filtros['importe_total_venta']=importe_total_venta
 
-            print('filtros--->',filtros)
+
 
             comprobanteCab = self.queryset.filter(**filtros)[0]
 
@@ -200,7 +200,10 @@ class ComprobanteViewSet(ViewSet):
             #comprobanteDet = ComprobanteDet.objects.filter(dfnumser=serie,dfnumdoc=numdoc,tipodoc_comprobante=tipdoc_comprobante)
             comprobanteDet = ComprobanteDet.objects.filter(dfnumser=numser,dfnumdoc=numdoc,tipodoc_comprobante=tipodoc_comprobante)
             serializerDets=ComprobanteDetSerializer(comprobanteDet,many=True)
+
             return Response({'cabecera':serializerCab.data,'detalle':serializerDets.data })
+
+
         except:
             return Response({'status': False})
 
@@ -306,12 +309,12 @@ class ResumenViewSet(ViewSet):
         numdoc = request.data.get('numdoc')
         tipo_resumen = request.data.get('tipoResumen')
 
-        try:
+        #try:
 
-            doc=volver_generar_resumen(numser,numdoc,tipo_resumen)
-            return Response({'success':True,'data':doc})
-        except:
-            return Response({'success':False})
+        doc=volver_generar_resumen(numser,numdoc,tipo_resumen)
+        return Response({'success':True,'data':doc})
+        #except:
+            #return Response({'success':False})
 
 class HerramientasViewSet(ViewSet):
     @action(methods=['post'], url_path='datos', detail=False)

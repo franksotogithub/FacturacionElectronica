@@ -14,7 +14,7 @@ $utils.facturas.crearTablaComprobantes=function(tabla,fechaIni,fechaFin,estado){
                     {data:'cfnumser' ,'searchable':true},
                     {data:'cfnumdoc' ,'searchable':true},
                     {data: 'cfnombre' ,'searchable':true},
-                    {data: 'estado_comprobante' ,'searchable':true},
+                    {data: 'estado_comprobante.nombre' ,'searchable':true},
 
         ];
         var slug = 'facturacion-api/comprobantes/listar';
@@ -129,7 +129,7 @@ $utils.facturas.crearDetalleComprobante = function (cell, tabla) {
 
         $('#cffecdoc').val(data.cabecera.cffecdoc);
         $('#cfnumdoc').val(data.cabecera.cfnumdoc);
-        $('#estado_comprobante').val(data.cabecera.estado_comprobante);
+        $('#estado_comprobante').val(data.cabecera.estado_comprobante.nombre);
         $('#cfcodcli').val(data.cabecera.cfcodcli);
         $('#nro_doc_receptor').val(data.cabecera.nro_doc_receptor);
         $('#cfnombre').val(data.cabecera.cfnombre);
@@ -144,6 +144,16 @@ $utils.facturas.crearDetalleComprobante = function (cell, tabla) {
         $('#importe_total_venta').val(data.cabecera.importe_total_venta);
         $utils.facturas.nomArchivo=data.cabecera.nom_archivo;
         $utils.facturas.crearTablaDetalleComprobante(tabla,data.detalle);
+        if(estado_comprobante!=='03')
+        {
+            $("#descargar_pdf").prop('disabled',true);
+            $("#enviar_correo").prop('disabled',true);
+        }
+        else
+        {
+            $("#descargar_pdf").prop('disabled',false);
+            $("#enviar_correo").prop('disabled',false);
+        }
 
     });
     $('#modal_detalle_factura').modal("show");
