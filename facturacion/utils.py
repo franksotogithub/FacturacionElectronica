@@ -138,8 +138,6 @@ def genera_pdf_facturas_electronicas(datos,template_name):
 
     return file
 
-
-
 def enviar_mail(name_file,destino):
 
     message = EmailMessage('prueba', 'prueba para alex de envio de correo con archivo adjunto.', settings.EMAIL_HOST_USER,
@@ -153,7 +151,6 @@ def enviar_mail(name_file,destino):
     message.attach(name_file, file.read(), 'application/pdf')
     message.send()
     file.close()
-
 
 def genera_json(file,data,directory=None):
     if not os.path.exists(settings.FILES_JSON):
@@ -374,8 +371,6 @@ def generar_txt_resumenes(tipo_resumen):
             doc_sunat.save()
         except:
             continue
-
-
 
 
 def generar_resumen(serie,num_doc,tipo_resumen):
