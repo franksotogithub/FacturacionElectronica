@@ -16,7 +16,7 @@ django-mail-templated==2.6.5
 django-mptt==0.9.0
 django-pyodbc-azure==2.0.6.1
 django-qr-code==1.0.0
-djangorestframework==3.8.2
+djangorestframework==3.9.1
 et-xmlfile==1.0.1
 html5lib==1.0.1
 httplib2==0.11.3
