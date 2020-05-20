@@ -19,7 +19,7 @@ django-qr-code==1.0.0
 djangorestframework==3.8.2
 et-xmlfile==1.0.1
 html5lib==1.0.1
-httplib2==0.11.3
+httplib2==0.18.0
 idna==2.7
 jdcal==1.4
 kombu==3.0.37
