@@ -35,7 +35,7 @@ PyQRCode==1.2.1
 pytz==2018.4
 PyYAML==3.13
 qrcode==6.0
-reportlab==3.4.0
+reportlab==3.5.55
 requests==2.19.1
 runscript==0.2.6
 six==1.11.0
